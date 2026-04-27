@@ -52,17 +52,43 @@
       </span>
     </nav>
       
-    <button class="mobile-menu-button" type="button" aria-expanded="false" aria-controls="mobile-navigation" data-mobile-menu-toggle>Menu</button>
-      
       <button class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false" data-theme-toggle>
+        <svg class="theme-toggle-icon" data-theme-icon="moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor"></path>
+        </svg>
+        <svg class="theme-toggle-icon" data-theme-icon="sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4" fill="currentColor"></circle>
+          <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="12" y1="2" x2="12" y2="5"></line>
+            <line x1="12" y1="19" x2="12" y2="22"></line>
+            <line x1="2" y1="12" x2="5" y2="12"></line>
+            <line x1="19" y1="12" x2="22" y2="12"></line>
+            <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"></line>
+            <line x1="16.95" y1="16.95" x2="19.07" y2="19.07"></line>
+            <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"></line>
+            <line x1="16.95" y1="7.05" x2="19.07" y2="4.93"></line>
+          </g>
+        </svg>
         <span class="theme-toggle-track" aria-hidden="true">
           <span class="theme-toggle-dot"></span>
         </span>
         <span class="theme-toggle-text">Dark</span>
       </button>
+      
+    <span class="header-mobile-socials" aria-hidden="false">
+      <a href="https://www.linkedin.com/in/imivani/" aria-label="LinkedIn">in</a>
+    </span>
+      
+    <button class="mobile-menu-button" type="button" aria-expanded="false" aria-controls="mobile-navigation" aria-label="Open menu" data-mobile-menu-toggle>
+      <span class="hamburger-icon" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
     </header>
     
-      <div class="mobile-panel nav" id="mobile-navigation" aria-label="Mobile navigation" data-mobile-menu-panel hidden>
+      <div class="mobile-panel nav" id="mobile-navigation" aria-label="Mobile navigation" data-mobile-menu-panel>
         <a class="active" href="../index.html">All Reports</a>
         <a class="" href="../about/index.html">About Me</a>
         
@@ -98,10 +124,6 @@
         <hr>
         
     <div class="report-tools" data-report-tools>
-      <label class="report-search">
-        <span>Search reports</span>
-        <input type="search" placeholder="Search by company, case, or topic" autocomplete="off" data-report-search>
-      </label>
       <div class="report-filters" aria-label="Filter reports">
         <button type="button" class="is-active" data-report-filter="all" aria-pressed="true">All</button>
         <button type="button" data-report-filter="featured" aria-pressed="false">Featured</button>
@@ -109,6 +131,16 @@
         <button type="button" data-report-filter="equity" aria-pressed="false">Equity</button>
         <button type="button" data-report-filter="school" aria-pressed="false">School</button>
       </div>
+      <button type="button" class="report-search-toggle" aria-label="Search reports" aria-expanded="false" data-report-search-toggle>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+          <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
+          <line x1="16" y1="16" x2="20.5" y2="20.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></line>
+        </svg>
+      </button>
+      <label class="report-search">
+        <span>Search reports</span>
+        <input type="search" placeholder="Search by company, case, or topic" autocomplete="off" data-report-search>
+      </label>
       <label class="report-sort">
         <span>Sort</span>
         <select data-report-sort>

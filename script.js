@@ -262,14 +262,19 @@
     const panel = document.querySelector('[data-mobile-menu-panel]');
     if (!toggle || !panel) return;
 
+    function isOpen() {
+      return panel.classList.contains('is-open');
+    }
+
     function setOpen(open) {
-      panel.hidden = !open;
+      panel.classList.toggle('is-open', open);
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
       document.body.classList.toggle('menu-open', open);
     }
 
     toggle.addEventListener('click', () => {
-      setOpen(panel.hidden);
+      setOpen(!isOpen());
     });
 
     panel.addEventListener('click', (event) => {
@@ -277,7 +282,7 @@
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !panel.hidden) {
+      if (event.key === 'Escape' && isOpen()) {
         setOpen(false);
         toggle.focus({ preventScroll: true });
       }
@@ -286,6 +291,34 @@
     window.addEventListener('resize', () => {
       if (window.innerWidth > 1120) setOpen(false);
     }, { passive: true });
+  }
+
+  function setupReportSearchToggle() {
+    const tools = document.querySelector('[data-report-tools]');
+    if (!tools) return;
+
+    const toggle = tools.querySelector('[data-report-search-toggle]');
+    const input = tools.querySelector('[data-report-search]');
+    if (!toggle || !input) return;
+
+    function setOpen(open) {
+      tools.classList.toggle('is-search-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) {
+        requestAnimationFrame(() => input.focus({ preventScroll: true }));
+      }
+    }
+
+    toggle.addEventListener('click', () => {
+      setOpen(!tools.classList.contains('is-search-open'));
+    });
+
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+        toggle.focus({ preventScroll: true });
+      }
+    });
   }
 
   function setupHeaderState() {
@@ -329,6 +362,7 @@
     setupMobileMenu();
     setupReveal();
     setupReportFilters();
+    setupReportSearchToggle();
     setupPageTransitions();
     setupLightbox();
   });
