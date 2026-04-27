@@ -1,0 +1,383 @@
+{
+  "capturedAt": "2026-04-27T20:09:22.269Z",
+  "source": "https://imivani.com/",
+  "screenshots": [
+    {
+      "file": "C:\\Users\\busin.IVANS-OFFICE-PC\\OneDrive\\Documents\\Codex\\Research Website\\screenshots\\home-desktop-fullpage.png",
+      "jsonFile": "C:\\Users\\busin.IVANS-OFFICE-PC\\OneDrive\\Documents\\Codex\\Research Website\\screenshots\\home-desktop-fullpage.json",
+      "title": "Ivan I.",
+      "url": "https://imivani.com/",
+      "sections": 16
+    },
+    {
+      "file": "C:\\Users\\busin.IVANS-OFFICE-PC\\OneDrive\\Documents\\Codex\\Research Website\\screenshots\\home-mobile-fullpage.png",
+      "jsonFile": "C:\\Users\\busin.IVANS-OFFICE-PC\\OneDrive\\Documents\\Codex\\Research Website\\screenshots\\home-mobile-fullpage.json",
+      "title": "Ivan I.",
+      "url": "https://imivani.com/",
+      "sections": 16
+    },
+    {
+      "file": "C:\\Users\\busin.IVANS-OFFICE-PC\\OneDrive\\Documents\\Codex\\Research Website\\screenshots\\home-tablet-fullpage.png",
+      "jsonFile": "C:\\Users\\busin.IVANS-OFFICE-PC\\OneDrive\\Documents\\Codex\\Research Website\\screenshots\\home-tablet-fullpage.json",
+      "title": "Ivan I.",
+      "url": "https://imivani.com/",
+      "sections": 16
+    },
+    {
+      "file": "C:\\Users\\busin.IVANS-OFFICE-PC\\OneDrive\\Documents\\Codex\\Research Website\\screenshots\\about-desktop-fullpage.png",
+      "jsonFile": "C:\\Users\\busin.IVANS-OFFICE-PC\\OneDrive\\Documents\\Codex\\Research Website\\screenshots\\about-desktop-fullpage.json",
+      "title": "About | Discover Investment Strategies - Learn More — Ivan I.",
+      "url": "https://imivani.com/about",
+      "sections": 6
+    }
+  ],
+  "navLinks": [
+    {
+      "text": "Skip to Content",
+      "href": "https://imivani.com/#page"
+    },
+    {
+      "text": "",
+      "href": "https://imivani.com/"
+    },
+    {
+      "text": "All Report",
+      "href": "https://imivani.com/"
+    },
+    {
+      "text": "About Me",
+      "href": "https://imivani.com/about"
+    },
+    {
+      "text": "LinkedIn",
+      "href": "https://www.linkedin.com/in/imivani/"
+    },
+    {
+      "text": "bu ine @imivani.com",
+      "href": "mailto:business@imivani.com"
+    },
+    {
+      "text": "LinkedIn",
+      "href": "https://www.linkedin.com/in/imivani/"
+    },
+    {
+      "text": "bu ine @imivani.com",
+      "href": "mailto:business@imivani.com"
+    }
+  ],
+  "homepage": {
+    "title": "Ivan I.",
+    "metaDescription": "A collection of my research & economic reports.",
+    "generator": "",
+    "topColors": [
+      {
+        "value": "rgb(24, 22, 22)",
+        "count": 467
+      },
+      {
+        "value": "rgb(255, 255, 255)",
+        "count": 323
+      },
+      {
+        "value": "rgb(255, 249, 224)",
+        "count": 34
+      },
+      {
+        "value": "rgb(255, 251, 219)",
+        "count": 13
+      },
+      {
+        "value": "rgb(35, 23, 1)",
+        "count": 8
+      },
+      {
+        "value": "rgb(255, 247, 211)",
+        "count": 8
+      },
+      {
+        "value": "rgb(244, 240, 225)",
+        "count": 8
+      },
+      {
+        "value": "rgb(187, 187, 187)",
+        "count": 2
+      },
+      {
+        "value": "rgb(233, 216, 165)",
+        "count": 1
+      },
+      {
+        "value": "rgb(23, 23, 22)",
+        "count": 1
+      }
+    ],
+    "topFonts": [
+      {
+        "value": "\"Bodoni Moda\"",
+        "count": 421
+      },
+      {
+        "value": "adobe-garamond-pro",
+        "count": 1
+      }
+    ],
+    "sections": [
+      {
+        "tag": "header",
+        "id": "header",
+        "className": "\n      \n        \n      \n      header theme-col--primary\n    ",
+        "text": "Skip to Content\nAll Report \nAbout Me\nI.C.B.C Report \nEquity Re earch & Economic Report \nSchool Report",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 105
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 2
+      },
+      {
+        "tag": "article",
+        "id": "sections",
+        "className": "sections",
+        "text": "All Report \nI.C.B.C Preliminary & Final \nTeam  of two competing in Canada’  olde t, large t, and mo t pre tigiou  international ca e competition.\n\nPreliminary Ca e | Hydro One\n\nFinal  Ca e | Roger  Communication\n\nEquity ",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 4696
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 28
+      },
+      {
+        "tag": "section",
+        "id": "",
+        "className": "page-section has-section-divider\n    \n      full-bleed-section\n      layout-engine-section\n    \n    background-width--full-bleed\n    \n      \n        section-height--custom\n      \n ",
+        "text": "All Report \nI.C.B.C Preliminary & Final \nTeam  of two competing in Canada’  olde t, large t, and mo t pre tigiou  international ca e competition.",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 439
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 0
+      },
+      {
+        "tag": "section",
+        "id": "",
+        "className": "page-section \n    \n      gallery-section\n      full-bleed-section\n    \n    background-width--full-bleed\n    \n      section-height--medium\n    \n    \n      content-width--wide\n    \n ",
+        "text": "Preliminary Ca e | Hydro One\n\nFinal  Ca e | Roger  Communication",
+        "rect": {
+          "x": 0,
+          "y": 439,
+          "width": 1440,
+          "height": 444
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(24, 22, 22)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 2
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "className": "gallery-strips gallery-strips--layout-strips",
+        "text": "Preliminary Ca e | Hydro One\n\nFinal  Ca e | Roger  Communication",
+        "rect": {
+          "x": 93,
+          "y": 439,
+          "width": 1255,
+          "height": 444
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(24, 22, 22)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 2
+      },
+      {
+        "tag": "section",
+        "id": "",
+        "className": "page-section has-section-divider\n    \n      full-bleed-section\n      layout-engine-section\n    \n    background-width--full-bleed\n    \n      \n        section-height--custom\n      \n ",
+        "text": "Equity Re earch & Economic Report \nAcademic re earch and competitive ca ework.",
+        "rect": {
+          "x": 0,
+          "y": 883,
+          "width": 1440,
+          "height": 173
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 0
+      },
+      {
+        "tag": "section",
+        "id": "",
+        "className": "page-section \n    \n      gallery-section\n      full-bleed-section\n    \n    background-width--full-bleed\n    \n      section-height--medium\n    \n    \n      content-width--wide\n    \n ",
+        "text": "Spartan Delta Re earch Report (HFC)\n\nAltaGa  Re earch Report (CFA)\n\nSanction , Friction & Wedge  in Ru ia Crude Market \n\nSpartan Delta One Pager\n\nETF Selection for Anna\n\nValuing Wal-Mart",
+        "rect": {
+          "x": 0,
+          "y": 1055,
+          "width": 1440,
+          "height": 930
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(24, 22, 22)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 6
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "className": "gallery-strips gallery-strips--layout-strips",
+        "text": "Spartan Delta Re earch Report (HFC)\n\nAltaGa  Re earch Report (CFA)\n\nSanction , Friction & Wedge  in Ru ia Crude Market \n\nSpartan Delta One Pager\n\nETF Selection for Anna\n\nValuing Wal-Mart",
+        "rect": {
+          "x": 93,
+          "y": 1055,
+          "width": 1255,
+          "height": 930
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(24, 22, 22)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 6
+      },
+      {
+        "tag": "section",
+        "id": "",
+        "className": "page-section has-section-divider\n    \n      full-bleed-section\n      layout-engine-section\n    \n    background-width--full-bleed\n    \n      \n        section-height--custom\n      \n ",
+        "text": "Completed within  tructured three-hour  e ion .\nI.C.B.C Fall Ca e",
+        "rect": {
+          "x": 0,
+          "y": 1985,
+          "width": 1440,
+          "height": 209
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 0
+      },
+      {
+        "tag": "section",
+        "id": "",
+        "className": "page-section \n    \n      gallery-section\n      full-bleed-section\n    \n    background-width--full-bleed\n    \n      section-height--medium\n    \n    \n      content-width--wide\n    \n ",
+        "text": "Markle Wa te Sy tem \n\nDiamond Standard\n\nEnergyDirect Wind Farm\n\nWe tmill  Carpet\n\nLake hore Plumbing & Heating\n\nAmeritrade M&A Deal\n\nNew Earth Mining\n\nPark  Capital - LBO\n\nQuinte entially Canadian\n\nSKETCH: Financing The ",
+        "rect": {
+          "x": 0,
+          "y": 2194,
+          "width": 1440,
+          "height": 1472
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(24, 22, 22)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 16
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "className": "gallery-strips gallery-strips--layout-strips",
+        "text": "Markle Wa te Sy tem \n\nDiamond Standard\n\nEnergyDirect Wind Farm\n\nWe tmill  Carpet\n\nLake hore Plumbing & Heating\n\nAmeritrade M&A Deal\n\nNew Earth Mining\n\nPark  Capital - LBO\n\nQuinte entially Canadian\n\nSKETCH: Financing The ",
+        "rect": {
+          "x": 93,
+          "y": 2194,
+          "width": 1255,
+          "height": 1472
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(24, 22, 22)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 16
+      },
+      {
+        "tag": "section",
+        "id": "",
+        "className": "page-section has-section-divider\n    \n      full-bleed-section\n      layout-engine-section\n    \n    background-width--full-bleed\n    \n      \n        section-height--custom\n      \n ",
+        "text": "School Report \nA ignment  & extracurricular   at Ha kayne.",
+        "rect": {
+          "x": 0,
+          "y": 3666,
+          "width": 1440,
+          "height": 173
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 0
+      },
+      {
+        "tag": "section",
+        "id": "",
+        "className": "page-section \n    \n      gallery-section\n      full-bleed-section\n    \n    background-width--full-bleed\n    \n      section-height--medium\n    \n    \n      content-width--wide\n    \n ",
+        "text": "BTMA 317 Final Report\n\nLehman Brother  Collap e\n\nGovernance Ca e Study\n\nAn Argument for Tech Majority Right",
+        "rect": {
+          "x": 0,
+          "y": 3839,
+          "width": 1440,
+          "height": 858
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(24, 22, 22)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 4
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "className": "gallery-strips gallery-strips--layout-strips",
+        "text": "BTMA 317 Final Report\n\nLehman Brother  Collap e\n\nGovernance Ca e Study\n\nAn Argument for Tech Majority Right",
+        "rect": {
+          "x": 93,
+          "y": 3839,
+          "width": 1255,
+          "height": 858
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(24, 22, 22)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 4
+      },
+      {
+        "tag": "footer",
+        "id": "footer-sections",
+        "className": "sections",
+        "text": "bu ine @imivani.com\n\nIvan Im henet kyy",
+        "rect": {
+          "x": 0,
+          "y": 4696,
+          "width": 1440,
+          "height": 128
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 0
+      },
+      {
+        "tag": "section",
+        "id": "",
+        "className": "page-section \n    \n      full-bleed-section\n      layout-engine-section\n    \n    background-width--full-bleed\n    \n      \n        section-height--custom\n      \n    \n    \n      cont",
+        "text": "bu ine @imivani.com\n\nIvan Im henet kyy",
+        "rect": {
+          "x": 0,
+          "y": 4696,
+          "width": 1440,
+          "height": 128
+        },
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "fontFamily": "\"Bodoni Moda\"",
+        "imageCount": 0
+      }
+    ]
+  }
+}
