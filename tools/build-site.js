@@ -198,10 +198,11 @@ function header(prefix, currentSlug) {
       </span>
     </nav>`;
 
-  const mobile = `
-    <details class="mobile-menu">
-      <summary>Menu</summary>
-      <div class="mobile-panel nav" aria-label="Mobile navigation">
+  const mobileToggle = `
+    <button class="mobile-menu-button" type="button" aria-expanded="false" aria-controls="mobile-navigation" data-mobile-menu-toggle>Menu</button>`;
+
+  const mobilePanel = `
+      <div class="mobile-panel nav" id="mobile-navigation" aria-label="Mobile navigation" data-mobile-menu-panel hidden>
         <a class="${currentSlug === 'home' ? 'active' : ''}" href="${prefix}index.html">All Reports</a>
         <a class="${currentSlug === 'about' ? 'active' : ''}" href="${prefix}about/index.html">About Me</a>
         ${navDetails('I.C.B.C Reports', ICBC_MENU, prefix, currentSlug, icbcActive)}
@@ -211,16 +212,16 @@ function header(prefix, currentSlug) {
           <a href="${LINKEDIN}" aria-label="LinkedIn">in</a>
           <a class="mail-icon" href="mailto:${EMAIL}" aria-label="Email">&#9993;</a>
         </span>
-      </div>
-    </details>`;
+      </div>`;
 
   return `
     <header class="site-header">
       <a class="brand" href="${prefix}index.html" aria-label="Ivan I. home">II</a>
       ${desktop}
-      ${mobile}
+      ${mobileToggle}
       ${themeToggle()}
-    </header>`;
+    </header>
+    ${mobilePanel}`;
 }
 
 function themeToggle() {

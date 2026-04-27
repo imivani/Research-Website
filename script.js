@@ -257,6 +257,37 @@
     applyFilters();
   }
 
+  function setupMobileMenu() {
+    const toggle = document.querySelector('[data-mobile-menu-toggle]');
+    const panel = document.querySelector('[data-mobile-menu-panel]');
+    if (!toggle || !panel) return;
+
+    function setOpen(open) {
+      panel.hidden = !open;
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.classList.toggle('menu-open', open);
+    }
+
+    toggle.addEventListener('click', () => {
+      setOpen(panel.hidden);
+    });
+
+    panel.addEventListener('click', (event) => {
+      if (event.target.closest('a[href]')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !panel.hidden) {
+        setOpen(false);
+        toggle.focus({ preventScroll: true });
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 1120) setOpen(false);
+    }, { passive: true });
+  }
+
   function setupHeaderState() {
     const header = document.querySelector('.site-header');
     if (!header) return;
@@ -295,6 +326,7 @@
     markReady();
     setupHeaderState();
     setupThemeToggle();
+    setupMobileMenu();
     setupReveal();
     setupReportFilters();
     setupPageTransitions();

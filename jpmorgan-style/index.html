@@ -52,9 +52,17 @@
       </span>
     </nav>
       
-    <details class="mobile-menu">
-      <summary>Menu</summary>
-      <div class="mobile-panel nav" aria-label="Mobile navigation">
+    <button class="mobile-menu-button" type="button" aria-expanded="false" aria-controls="mobile-navigation" data-mobile-menu-toggle>Menu</button>
+      
+      <button class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false" data-theme-toggle>
+        <span class="theme-toggle-track" aria-hidden="true">
+          <span class="theme-toggle-dot"></span>
+        </span>
+        <span class="theme-toggle-text">Dark</span>
+      </button>
+    </header>
+    
+      <div class="mobile-panel nav" id="mobile-navigation" aria-label="Mobile navigation" data-mobile-menu-panel hidden>
         <a class="active" href="index.html">All Reports</a>
         <a class="" href="about/index.html">About Me</a>
         
@@ -83,15 +91,6 @@
           <a class="mail-icon" href="mailto:business@imivani.com" aria-label="Email">&#9993;</a>
         </span>
       </div>
-    </details>
-      
-      <button class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false" data-theme-toggle>
-        <span class="theme-toggle-track" aria-hidden="true">
-          <span class="theme-toggle-dot"></span>
-        </span>
-        <span class="theme-toggle-text">Dark</span>
-      </button>
-    </header>
 <main>
     <section class="dark-band home-hero">
       <div class="wrap">
