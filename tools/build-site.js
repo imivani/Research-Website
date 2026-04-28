@@ -7,6 +7,7 @@ const assetManifest = JSON.parse(fs.readFileSync('site-assets.json', 'utf8'));
 const ORIGIN = 'https://imivani.com';
 const EMAIL = 'business@imivani.com';
 const LINKEDIN = 'https://www.linkedin.com/in/imivani/';
+const LINKEDIN_LABEL = 'linkedin.com/in/imivani';
 
 const ICBC_MENU = [
   ['rogers', 'Rogers Comm.'],
@@ -164,9 +165,17 @@ function documentTitle(pageTitle) {
   return `${pageTitle} - Ivan I.`;
 }
 
+function homeHref(prefix) {
+  return `${prefix}index.html`;
+}
+
+function pageHref(prefix, slug) {
+  return `${prefix}${slug}/index.html`;
+}
+
 function menuLinks(items, prefix, currentSlug) {
   return items.map(([slug, label]) => (
-    `<a class="${currentSlug === slug ? 'active' : ''}" href="${prefix}${slug}/index.html">${escapeHtml(label)}</a>`
+    `<a class="${currentSlug === slug ? 'active' : ''}" href="${pageHref(prefix, slug)}">${escapeHtml(label)}</a>`
   )).join('');
 }
 
@@ -187,21 +196,27 @@ function header(prefix, currentSlug) {
 
   const desktop = `
     <nav class="nav desktop-nav" aria-label="Primary navigation">
-      <a class="${currentSlug === 'home' ? 'active' : ''}" href="${prefix}index.html">All Reports</a>
-      <a class="${currentSlug === 'about' ? 'active' : ''}" href="${prefix}about/index.html">About Me</a>
+      <a class="${currentSlug === 'home' ? 'active' : ''}" href="${homeHref(prefix)}">All Reports</a>
+      <a class="${currentSlug === 'about' ? 'active' : ''}" href="${pageHref(prefix, 'about')}">About Me</a>
       ${navDetails('I.C.B.C Reports', ICBC_MENU, prefix, currentSlug, icbcActive)}
       ${navDetails('Equity Research & Economic Reports', EQUITY_MENU, prefix, currentSlug, equityActive)}
       ${navDetails('School Reports', SCHOOL_MENU, prefix, currentSlug, schoolActive)}
       <span class="socials">
-        <a href="${LINKEDIN}" aria-label="LinkedIn">in</a>
+        <a class="linkedin-icon" href="${LINKEDIN}" aria-label="LinkedIn">in</a>
         <a class="mail-icon" href="mailto:${EMAIL}" aria-label="Email">&#9993;</a>
       </span>
     </nav>`;
 
-  const mobileSocials = `
-    <span class="header-mobile-socials" aria-hidden="false">
-      <a href="${LINKEDIN}" aria-label="LinkedIn">in</a>
-    </span>`;
+  const mobileLinkedin = `
+    <a class="header-linkedin linkedin-icon" href="${LINKEDIN}" aria-label="LinkedIn">in</a>`;
+
+  const mobileSearch = currentSlug === 'home' ? `
+    <button class="header-search-button" type="button" aria-label="Search reports" aria-expanded="false" aria-controls="report-search" data-mobile-search-toggle>
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+        <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
+        <line x1="16" y1="16" x2="20.5" y2="20.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></line>
+      </svg>
+    </button>` : '';
 
   const mobileToggle = `
     <button class="mobile-menu-button" type="button" aria-expanded="false" aria-controls="mobile-navigation" aria-label="Open menu" data-mobile-menu-toggle>
@@ -214,23 +229,24 @@ function header(prefix, currentSlug) {
 
   const mobilePanel = `
       <div class="mobile-panel nav" id="mobile-navigation" aria-label="Mobile navigation" data-mobile-menu-panel>
-        <a class="${currentSlug === 'home' ? 'active' : ''}" href="${prefix}index.html">All Reports</a>
-        <a class="${currentSlug === 'about' ? 'active' : ''}" href="${prefix}about/index.html">About Me</a>
+        <a class="${currentSlug === 'home' ? 'active' : ''}" href="${homeHref(prefix)}">All Reports</a>
+        <a class="${currentSlug === 'about' ? 'active' : ''}" href="${pageHref(prefix, 'about')}">About Me</a>
         ${navDetails('I.C.B.C Reports', ICBC_MENU, prefix, currentSlug, icbcActive)}
         ${navDetails('Equity Research & Economic Reports', EQUITY_MENU, prefix, currentSlug, equityActive)}
         ${navDetails('School Reports', SCHOOL_MENU, prefix, currentSlug, schoolActive)}
         <span class="socials">
-          <a href="${LINKEDIN}" aria-label="LinkedIn">in</a>
+          <a class="linkedin-icon" href="${LINKEDIN}" aria-label="LinkedIn">in</a>
           <a class="mail-icon" href="mailto:${EMAIL}" aria-label="Email">&#9993;</a>
         </span>
       </div>`;
 
   return `
     <header class="site-header">
-      <a class="brand" href="${prefix}index.html" aria-label="Ivan I. home">II</a>
+      <a class="brand" href="${homeHref(prefix)}" aria-label="Ivan I. home">II</a>
       ${desktop}
       ${themeToggle()}
-      ${mobileSocials}
+      ${mobileLinkedin}
+      ${mobileSearch}
       ${mobileToggle}
     </header>
     ${mobilePanel}`;
@@ -268,7 +284,7 @@ function footer() {
       <div class="wrap">
         <h3>Ivan Imshenetskyy</h3>
         <span class="socials">
-          <a href="${LINKEDIN}" aria-label="LinkedIn">in</a>
+          <a class="linkedin-icon" href="${LINKEDIN}" aria-label="LinkedIn">in</a>
           <a class="mail-icon" href="mailto:${EMAIL}" aria-label="Email">&#9993;</a>
         </span>
         <a class="email" href="mailto:${EMAIL}">${EMAIL}</a>
@@ -312,7 +328,7 @@ function renderCard(item, image, prefix, group, index) {
   const src = image ? localAsset(image.src, prefix) : '';
   const featured = extraClass.includes('feature') ? 'true' : 'false';
   return `
-    <a class="report-card ${extraClass}" href="${prefix}${slug}/index.html" data-report-card data-title="${escapeHtml(title)}" data-category="${escapeHtml(group.category)}" data-featured="${featured}" data-index="${index}">
+    <a class="report-card ${extraClass}" href="${pageHref(prefix, slug)}" data-report-card data-title="${escapeHtml(title)}" data-category="${escapeHtml(group.category)}" data-featured="${featured}" data-index="${index}">
       <figure>
         ${src ? `<img src="${src}" alt="${escapeHtml(image.alt || title)}" loading="lazy">` : ''}
         <figcaption>${escapeHtml(title)}</figcaption>
@@ -323,22 +339,19 @@ function renderCard(item, image, prefix, group, index) {
 function reportControls() {
   return `
     <div class="report-tools" data-report-tools>
-      <div class="report-filters" aria-label="Filter reports">
-        <button type="button" class="is-active" data-report-filter="all" aria-pressed="true">All</button>
-        <button type="button" data-report-filter="featured" aria-pressed="false">Featured</button>
-        <button type="button" data-report-filter="icbc" aria-pressed="false">I.C.B.C</button>
-        <button type="button" data-report-filter="equity" aria-pressed="false">Equity</button>
-        <button type="button" data-report-filter="school" aria-pressed="false">School</button>
+      <div class="report-filter-panel">
+        <span class="report-filter-label">Filter by</span>
+        <div class="report-filters" aria-label="Filter reports">
+          <button type="button" class="is-active" data-report-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-report-filter="featured" aria-pressed="false">Featured</button>
+          <button type="button" data-report-filter="icbc" aria-pressed="false">I.C.B.C</button>
+          <button type="button" data-report-filter="equity" aria-pressed="false">Equity</button>
+          <button type="button" data-report-filter="school" aria-pressed="false">School</button>
+        </div>
       </div>
-      <button type="button" class="report-search-toggle" aria-label="Search reports" aria-expanded="false" data-report-search-toggle>
-        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
-          <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
-          <line x1="16" y1="16" x2="20.5" y2="20.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></line>
-        </svg>
-      </button>
       <label class="report-search">
         <span>Search reports</span>
-        <input type="search" placeholder="Search by company, case, or topic" autocomplete="off" data-report-search>
+        <input id="report-search" type="search" placeholder="Search by company, case, or topic" autocomplete="off" data-report-search>
       </label>
       <label class="report-sort">
         <span>Sort</span>
@@ -416,7 +429,7 @@ function renderAbout(prefix = '../') {
               ${intro.map((block) => `<div>${escapeHtml(block.text)}</div>`).join('')}
             </div>
             ${paragraphs.map((block) => `<p>${escapeHtml(block.text)}</p>`).join('')}
-            <p><a class="button" href="${prefix}index.html">Back to Home</a></p>
+            <p><a class="button" href="${homeHref(prefix)}">Back to Home</a></p>
           </div>
         </div>
       </section>
@@ -465,6 +478,44 @@ function reportData(slug) {
   };
 }
 
+const PASSAGE_KEYWORDS = /\b(recommendation|valuation|cash flows?|EBITDA|WACC|LBO|acquisition|synergies|financial modeling|peer valuation|risk|growth|governance|financing|investment|strategic|market|operations|thesis|returns?)\b/gi;
+
+function sentenceParts(text) {
+  return text.match(/[^.!?]+[.!?]+(?:\s|$)|[^.!?]+$/g) || [text];
+}
+
+function selectedPassage(paragraphs) {
+  let best = null;
+
+  paragraphs.forEach((paragraph, paragraphIndex) => {
+    sentenceParts(paragraph).forEach((sentence) => {
+      const text = sentence.trim();
+      if (text.length < 48) return;
+
+      const keywordScore = (text.match(PASSAGE_KEYWORDS) || []).length;
+      const leadScore = paragraphIndex === 0 ? 1 : 0;
+      const score = keywordScore + leadScore;
+
+      if (!best || score > best.score) {
+        best = { paragraphIndex, text, score };
+      }
+    });
+  });
+
+  return best;
+}
+
+function renderReportParagraph(text, passage) {
+  const escaped = escapeHtml(text);
+  if (!passage) return escaped;
+
+  const escapedPassage = escapeHtml(passage.text);
+  const index = escaped.indexOf(escapedPassage);
+  if (index === -1) return escaped;
+
+  return `${escaped.slice(0, index)}<strong class="copy-passage">${escapedPassage}</strong>${escaped.slice(index + escapedPassage.length)}`;
+}
+
 function renderReport(slug, prefix = '../') {
   const data = reportData(slug);
   const meta = data.meta.map((block, index) => {
@@ -477,6 +528,11 @@ function renderReport(slug, prefix = '../') {
     <figure class="slide-card">
       <img src="${localAsset(image.src, prefix)}" alt="${escapeHtml(image.alt || data.title)}" loading="lazy">
     </figure>`).join('');
+  const passage = selectedPassage(data.paragraphs);
+  const reportCopyHtml = data.paragraphs.map((paragraph, index) => {
+    const paragraphPassage = passage?.paragraphIndex === index ? passage : null;
+    return `<p>${renderReportParagraph(paragraph, paragraphPassage)}</p>`;
+  }).join('');
 
   const body = `
     <main>
@@ -484,7 +540,7 @@ function renderReport(slug, prefix = '../') {
         <div class="wrap">
           <h1>${escapeHtml(data.title)}</h1>
           ${meta ? `<div class="report-meta">${meta}</div>` : ''}
-          ${data.paragraphs.length ? `<div class="report-copy">${data.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</div>` : ''}
+          ${data.paragraphs.length ? `<div class="report-copy">${reportCopyHtml}</div>` : ''}
           ${pdfButton ? `<div class="button-row">${pdfButton}</div>` : ''}
         </div>
       </section>
@@ -494,7 +550,7 @@ function renderReport(slug, prefix = '../') {
             ${slides}
           </div>
           <div class="button-row">
-            <a class="button" href="${prefix}index.html">Back to Home</a>
+            <a class="button" href="${homeHref(prefix)}">Back to Home</a>
           </div>
         </div>
       </section>
