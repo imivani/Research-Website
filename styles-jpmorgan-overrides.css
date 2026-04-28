@@ -483,6 +483,10 @@ html[data-theme="dark"] .theme-toggle-dot {
   color: var(--jpm-ink);
 }
 
+html[data-theme="dark"] .featured-report-action {
+  color: #0a0a0a;
+}
+
 .featured-report-action:hover,
 .featured-report-action:focus-visible,
 .featured-carousel-controls button:hover,

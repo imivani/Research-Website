@@ -325,6 +325,12 @@ function shell({ title, description, prefix, currentSlug, body }) {
   <meta name="description" content="${escapeHtml(description || 'A collection of research and economic reports.')}">
   <title>${escapeHtml(title)}</title>
   ${themeBoot}
+  <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
+  <link rel="manifest" href="/assets/favicon/site.webmanifest">
+  <meta name="theme-color" content="#8f5a39">
   <link rel="stylesheet" href="${prefix}styles.css">
   <link rel="stylesheet" href="${prefix}styles-jpmorgan-overrides.css">
   <script src="${prefix}script.js" defer></script>
