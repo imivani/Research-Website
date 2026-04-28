@@ -787,6 +787,18 @@ figure {
   }
 }
 
+@keyframes submenu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scaleY(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
 .footer {
   background: var(--black);
   color: var(--cream-warm);
@@ -978,12 +990,19 @@ figure {
     border: 0;
     background: transparent;
     box-shadow: none;
-    animation: none;
     gap: 8px;
+    overflow: hidden;
+    transform-origin: top;
+    animation: submenu-in 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .mobile-panel .nav-menu a {
     font-size: 16px;
+  }
+
+  .mobile-panel details.is-submenu-animating .nav-menu {
+    animation: none;
+    transition: height 340ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms ease, transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .mobile-panel > .socials {

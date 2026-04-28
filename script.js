@@ -323,6 +323,74 @@
     }, { passive: true });
   }
 
+  function setupMobileSubmenus() {
+    const panel = document.querySelector('[data-mobile-menu-panel]');
+    if (!panel) return;
+
+    const media = window.matchMedia('(max-width: 1120px)');
+    const detailsItems = [...panel.querySelectorAll('details')];
+
+    function resetMenu(menu) {
+      menu.style.height = '';
+      menu.style.opacity = '';
+      menu.style.transform = '';
+    }
+
+    detailsItems.forEach((details) => {
+      const summary = details.querySelector('summary');
+      const menu = details.querySelector('.nav-menu');
+      if (!summary || !menu) return;
+
+      summary.addEventListener('click', (event) => {
+        if (!media.matches || reducedMotion) return;
+        event.preventDefault();
+        if (details.classList.contains('is-submenu-animating')) return;
+
+        const isOpening = !details.open;
+        details.classList.add('is-submenu-animating');
+
+        if (isOpening) {
+          details.open = true;
+          menu.style.height = '0px';
+          menu.style.opacity = '0';
+          menu.style.transform = 'translateY(-8px) scaleY(0.98)';
+
+          requestAnimationFrame(() => {
+            menu.style.height = `${menu.scrollHeight}px`;
+            menu.style.opacity = '1';
+            menu.style.transform = 'translateY(0) scaleY(1)';
+          });
+        } else {
+          menu.style.height = `${menu.scrollHeight}px`;
+          menu.style.opacity = '1';
+          menu.style.transform = 'translateY(0) scaleY(1)';
+
+          requestAnimationFrame(() => {
+            menu.style.height = '0px';
+            menu.style.opacity = '0';
+            menu.style.transform = 'translateY(-6px) scaleY(0.98)';
+          });
+        }
+
+        window.setTimeout(() => {
+          if (!isOpening) details.open = false;
+          details.classList.remove('is-submenu-animating');
+          resetMenu(menu);
+        }, 360);
+      });
+    });
+
+    window.addEventListener('resize', () => {
+      if (!media.matches) {
+        detailsItems.forEach((details) => {
+          details.classList.remove('is-submenu-animating');
+          const menu = details.querySelector('.nav-menu');
+          if (menu) resetMenu(menu);
+        });
+      }
+    }, { passive: true });
+  }
+
   function setupReportSearchToggle() {
     const tools = document.querySelector('[data-report-tools]');
     if (!tools) return;
@@ -408,6 +476,7 @@
     setupHeaderState();
     setupThemeToggle();
     setupMobileMenu();
+    setupMobileSubmenus();
     setupReveal();
     setupReportFilters();
     setupReportSearchToggle();
