@@ -57,15 +57,15 @@
 }
 
 html[data-theme="dark"] {
-  --jpm-white: #0f0c0a;
-  --jpm-paper: #18120f;
-  --jpm-paper-soft: #211812;
-  --jpm-ink: #f8efe5;
-  --jpm-charcoal: #080706;
+  --jpm-white: #1d1d1c;
+  --jpm-paper: #262625;
+  --jpm-paper-soft: #2c2c2a;
+  --jpm-ink: #ece4d6;
+  --jpm-charcoal: #131312;
   --jpm-brown: #b9825c;
   --jpm-brown-dark: #d8b392;
-  --jpm-line: rgba(185, 130, 92, 0.44);
-  --muted: #d8c9bc;
+  --jpm-line: rgba(236, 228, 214, 0.18);
+  --muted: #c8bfb1;
 }
 
 body {
@@ -95,13 +95,13 @@ body {
 }
 
 html[data-theme="dark"] .site-header {
-  border-bottom-color: rgba(185, 130, 92, 0.22);
-  background: rgba(15, 12, 10, 0.92);
+  border-bottom-color: rgba(236, 228, 214, 0.14);
+  background: rgba(48, 48, 46, 0.82);
 }
 
 html[data-theme="dark"] .has-scrolled .site-header {
-  background: rgba(15, 12, 10, 0.76);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  background: rgba(48, 48, 46, 0.68);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.32);
 }
 
 .brand {
@@ -115,7 +115,7 @@ html[data-theme="dark"] .has-scrolled .site-header {
   color: var(--jpm-ink);
   font-family: var(--serif);
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 300;
   gap: clamp(14px, 1.35vw, 24px);
 }
 

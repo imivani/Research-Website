@@ -202,7 +202,7 @@ function header(prefix, currentSlug) {
 
   const desktop = `
     <nav class="nav desktop-nav" aria-label="Primary navigation">
-      <a class="${currentSlug === 'home' ? 'active' : ''}" href="${homeHref(prefix)}">All Reports</a>
+      <a class="${currentSlug === 'home' ? 'active' : ''}" href="${homeHref(prefix)}">Home</a>
       <a class="${currentSlug === 'about' ? 'active' : ''}" href="${pageHref(prefix, 'about')}">About Me</a>
       ${navDetails('I.C.B.C Reports', ICBC_MENU, prefix, currentSlug, icbcActive)}
       ${navDetails('Equity Research & Economic Reports', EQUITY_MENU, prefix, currentSlug, equityActive)}
@@ -235,7 +235,7 @@ function header(prefix, currentSlug) {
 
   const mobilePanel = `
       <div class="mobile-panel nav" id="mobile-navigation" aria-label="Mobile navigation" data-mobile-menu-panel>
-        <a class="${currentSlug === 'home' ? 'active' : ''}" href="${homeHref(prefix)}">All Reports</a>
+        <a class="${currentSlug === 'home' ? 'active' : ''}" href="${homeHref(prefix)}">Home</a>
         <a class="${currentSlug === 'about' ? 'active' : ''}" href="${pageHref(prefix, 'about')}">About Me</a>
         ${navDetails('I.C.B.C Reports', ICBC_MENU, prefix, currentSlug, icbcActive)}
         ${navDetails('Equity Research & Economic Reports', EQUITY_MENU, prefix, currentSlug, equityActive)}
@@ -901,7 +901,7 @@ function renderReport(slug, prefix = '../') {
       <section class="dark-band report-hero report-hero-modern">
         <div class="wrap report-hero-grid">
           <div class="report-title-panel">
-            <a class="report-back-link" href="${homeHref(prefix)}">All reports <span>→</span></a>
+            <a class="report-back-link" href="${homeHref(prefix)}">Back to home <span>→</span></a>
             <h1>${escapeHtml(data.title)}</h1>
           </div>
           <aside class="report-context-panel">
