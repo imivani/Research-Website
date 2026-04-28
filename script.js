@@ -15,7 +15,7 @@
 
   function setupReveal() {
     const items = [
-      ...document.querySelectorAll('.home-hero .wrap, .section-head .wrap, .page-hero .wrap, .report-hero .wrap, .gallery-block .wrap, .about-photo, .about-copy > *, .profile-intro, .profile-stat, .progression-item, .profile-panel, .report-card, .slide-card, .button-row'),
+      ...document.querySelectorAll('.featured-carousel, .home-hero .wrap, .section-head .wrap, .page-hero .wrap, .report-hero .wrap, .gallery-block .wrap, .about-photo, .about-copy > *, .profile-intro, .profile-stat, .progression-item, .profile-panel, .report-card, .slide-card, .button-row'),
     ];
 
     items.forEach((item, index) => {
@@ -237,7 +237,7 @@
 
       elements.forEach((element, index) => {
         element.classList.remove('filter-pop');
-        element.style.setProperty('--filter-delay', `${Math.min(index, 8) * 34}ms`);
+        element.style.setProperty('--filter-delay', `${Math.min(index, 8) * 58}ms`);
         void element.offsetWidth;
         element.classList.add('filter-pop');
       });
@@ -285,6 +285,46 @@
 
     updateFilterButtons();
     applyFilters(false);
+  }
+
+  function setupFeaturedCarousel() {
+    const carousel = document.querySelector('[data-featured-carousel]');
+    if (!carousel) return;
+
+    const slides = [...carousel.querySelectorAll('[data-featured-slide]')];
+    const dots = [...carousel.querySelectorAll('[data-featured-dot]')];
+    const previous = carousel.querySelector('[data-featured-prev]');
+    const next = carousel.querySelector('[data-featured-next]');
+    const status = carousel.querySelector('[data-featured-status]');
+    if (!slides.length) return;
+
+    let activeIndex = 0;
+
+    function setActive(index) {
+      activeIndex = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        const isActive = slideIndex === activeIndex;
+        slide.classList.toggle('is-active', isActive);
+        slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      });
+      dots.forEach((dot, dotIndex) => {
+        const isActive = dotIndex === activeIndex;
+        dot.classList.toggle('is-active', isActive);
+        dot.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+      if (status) status.textContent = `${activeIndex + 1} / ${slides.length}`;
+    }
+
+    previous?.addEventListener('click', () => setActive(activeIndex - 1));
+    next?.addEventListener('click', () => setActive(activeIndex + 1));
+    dots.forEach((dot, index) => dot.addEventListener('click', () => setActive(index)));
+
+    carousel.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') setActive(activeIndex - 1);
+      if (event.key === 'ArrowRight') setActive(activeIndex + 1);
+    });
+
+    setActive(0);
   }
 
   function setupMobileMenu() {
@@ -478,6 +518,7 @@
     setupMobileMenu();
     setupMobileSubmenus();
     setupReveal();
+    setupFeaturedCarousel();
     setupReportFilters();
     setupReportSearchToggle();
     setupPageTransitions();

@@ -161,6 +161,12 @@ function uniqueImages(page) {
     });
 }
 
+function firstImageForSlug(slug) {
+  const page = pageForSlug(slug);
+  if (!page) return null;
+  return uniqueImages(page)[0] || null;
+}
+
 function documentTitle(pageTitle) {
   return `${pageTitle} - Ivan I.`;
 }
@@ -293,6 +299,14 @@ function footer() {
 }
 
 function shell({ title, description, prefix, currentSlug, body }) {
+  const googleTag = `<script async src="https://www.googletagmanager.com/gtag/js?id=G-8ZYVR9G2FD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8ZYVR9G2FD');
+</script>`;
   const themeBoot = `<script>
     try {
       const savedTheme = localStorage.getItem('portfolio-theme');
@@ -305,6 +319,7 @@ function shell({ title, description, prefix, currentSlug, body }) {
   return `<!doctype html>
 <html lang="en">
 <head>
+  ${googleTag}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escapeHtml(description || 'A collection of research and economic reports.')}">
@@ -349,7 +364,6 @@ function reportControls() {
         <span class="report-filter-label">Filter by</span>
         <div class="report-filters" aria-label="Filter reports">
           <button type="button" class="is-active" data-report-filter="all" aria-pressed="true">All</button>
-          <button type="button" data-report-filter="featured" aria-pressed="false">Featured</button>
           <button type="button" data-report-filter="icbc" aria-pressed="false">I.C.B.C</button>
           <button type="button" data-report-filter="equity" aria-pressed="false">Equity</button>
           <button type="button" data-report-filter="school" aria-pressed="false">School</button>
@@ -371,12 +385,54 @@ function reportControls() {
     </div>`;
 }
 
+function renderFeaturedShowcase(prefix = '') {
+  const slides = FEATURED_REPORTS.map((report, index) => {
+    const imageHtml = `<img src="${prefix}${escapeHtml(report.featuredImage)}" alt="${escapeHtml(report.featuredAlt)}" loading="${index === 0 ? 'eager' : 'lazy'}">`;
+    return `
+      <article class="featured-carousel-slide${index === 0 ? ' is-active' : ''}" data-featured-slide="${index}" aria-hidden="${index === 0 ? 'false' : 'true'}">
+        <a class="featured-carousel-media" href="${pageHref(prefix, report.slug)}">
+          ${imageHtml}
+        </a>
+        <div class="featured-carousel-copy">
+          <span class="featured-report-index">${String(index + 1).padStart(2, '0')}</span>
+          <div>
+            <span class="featured-report-eyebrow">${escapeHtml(report.eyebrow)}</span>
+            <h2>${escapeHtml(report.title)}</h2>
+            <p>${escapeHtml(report.description)}</p>
+            <a class="featured-report-action" href="${pageHref(prefix, report.slug)}">View report <span>&rarr;</span></a>
+          </div>
+        </div>
+      </article>`;
+  }).join('');
+  const dots = FEATURED_REPORTS.map((report, index) => `
+    <button type="button" class="${index === 0 ? 'is-active' : ''}" data-featured-dot="${index}" aria-label="Show ${escapeHtml(report.title)}" aria-pressed="${index === 0 ? 'true' : 'false'}"></button>`).join('');
+
+  return `
+    <section class="cream-band featured-reports" data-featured-showcase>
+      <div class="wrap">
+        <div class="featured-carousel" data-featured-carousel>
+          <div class="featured-carousel-track">
+            ${slides}
+          </div>
+          <div class="featured-carousel-controls" aria-label="Featured report controls">
+            <button type="button" data-featured-prev aria-label="Previous featured report">&larr;</button>
+            <span data-featured-status>1 / ${FEATURED_REPORTS.length}</span>
+            <button type="button" data-featured-next aria-label="Next featured report">&rarr;</button>
+          </div>
+          <div class="featured-carousel-dots" aria-label="Featured report slides">
+            ${dots}
+          </div>
+        </div>
+      </div>
+    </section>`;
+}
+
 function renderHome(prefix = '') {
   const page = homePage();
   const images = uniqueImages(page);
   let imageIndex = 0;
   let cardIndex = 0;
-  const intro = `
+  const libraryIntro = `
     <section class="dark-band home-hero">
       <div class="wrap">
         <h1>All Reports</h1>
@@ -407,7 +463,7 @@ function renderHome(prefix = '') {
     description: page.metaDescription || 'A collection of my research & economic reports.',
     prefix,
     currentSlug: 'home',
-    body: `<main>${intro}${groups}<div class="report-empty" data-report-empty hidden>No reports match the current search.</div></main>`,
+    body: `<main>${renderFeaturedShowcase(prefix)}${libraryIntro}${groups}<div class="report-empty" data-report-empty hidden>No reports match the current search.</div></main>`,
   });
 }
 
@@ -415,7 +471,42 @@ const PROFILE_STATS = [
   { value: '7+', label: 'years client-facing business experience' },
   { value: '2+', label: 'years energy-focused valuation experience' },
   { value: '200+', label: 'client projects delivered through FluxFrame' },
-  { value: '500+', label: 'professional connections' },
+  { value: '120K+', label: 'subscribers built through digital media' },
+];
+
+const FEATURED_REPORTS = [
+  {
+    slug: 'hydroone',
+    title: 'Hydro One Cost of Capital',
+    eyebrow: 'I.C.B.C Finance',
+    description: 'A regulator-focused WACC and valuation case built around allowed ROE, policy risk, and Canadian utility market mechanics.',
+    featuredImage: 'assets/featured/hydro-one-transmission.jpg',
+    featuredAlt: 'Hydro One transmission towers and power lines in Ontario',
+  },
+  {
+    slug: 'rogers',
+    title: 'Rogers Communications',
+    eyebrow: 'I.C.B.C Finals',
+    description: 'A finals case balancing strategic alternatives, capital allocation, and telecommunications operating realities under time pressure.',
+    featuredImage: 'assets/featured/rogers-passive-infrastructure.jpg',
+    featuredAlt: 'Telecommunications infrastructure poles and wires',
+  },
+  {
+    slug: 'sde',
+    title: 'Spartan Delta Research',
+    eyebrow: 'Equity Research',
+    description: 'Energy-focused public equity research combining asset-level valuation, peer benchmarking, and investment thesis development.',
+    featuredImage: 'assets/featured/spartan-delta-alberta-well.webp',
+    featuredAlt: 'Oil and gas well infrastructure in Alberta',
+  },
+  {
+    slug: 'altagas',
+    title: 'AltaGas Research Pitch',
+    eyebrow: 'CFA Research Challenge',
+    description: 'Institutional-quality fundamental research supported by detailed financial modeling, peer valuation, and strategic analysis.',
+    featuredImage: 'assets/featured/altagas-ripet.jpg',
+    featuredAlt: 'AltaGas Ridley Island Propane Export Terminal from above',
+  },
 ];
 
 const PROFILE_TIMELINE = [
@@ -423,36 +514,48 @@ const PROFILE_TIMELINE = [
     period: '2018 - 2024',
     role: 'Co-Founder',
     org: 'FluxFrame Digital',
+    logo: 'assets/profile-logos/fluxframe.jpeg',
+    initials: 'ff',
     detail: 'Bootstrapped and scaled a web and graphic design firm to peak $20K monthly net income, delivering 200+ client projects while building early operating, client management, and execution discipline.',
   },
   {
     period: 'May - Sep 2024',
     role: 'Finance Intern, Commercial Real Estate',
     org: 'Manchester Properties Inc.',
+    logo: 'assets/profile-logos/manchester-properties.jpeg',
+    initials: 'MPI',
     detail: 'Supported commercial real estate finance work across a portfolio with approximately $50M in assets under administration.',
   },
   {
     period: 'Sep 2024 - Aug 2025',
     role: 'Commercial Decision Analyst, Co-op',
     org: 'Cenovus Energy',
+    logo: 'assets/profile-logos/cenovus.jpeg',
+    initials: 'CV',
     detail: 'Supported upstream and downstream commercial decision-making through economic reporting, financial modeling, and materials for commercial leadership.',
   },
   {
     period: 'Aug 2025 - Jan 2026',
     role: 'Strategic Delivery Analyst, Contract',
     org: 'Cenovus Energy',
+    logo: 'assets/profile-logos/cenovus.jpeg',
+    initials: 'CV',
     detail: 'Supported executive-level reporting and financial analysis for senior downstream commercial leadership, including advanced modeling for Branded Dealer Cardlock sites.',
   },
   {
     period: 'Jan 2026 - Present',
     role: 'Teaching Assistant, SGMA 668',
     org: 'Haskayne School of Business',
+    logo: 'assets/profile-logos/haskayne.jpeg',
+    initials: 'H',
     detail: 'Teaching assistant for MBA Acquisitions in Entrepreneurship.',
   },
   {
     period: 'Apr 2026 - Present',
     role: 'Summer Analyst, Global Transaction Banking',
     org: 'CIBC Capital Markets',
+    logo: 'assets/profile-logos/cibc-capital-markets.jpeg',
+    initials: 'C',
     detail: 'Started as a Global Transaction Banking Summer Analyst at CIBC Capital Markets.',
   },
 ];
@@ -461,17 +564,13 @@ const PROFILE_EDUCATION = [
   {
     title: 'Haskayne School of Business',
     meta: 'Bachelor of Commerce, Finance - 2027',
-    items: [
-      'Top 3 Finalist, Finance Stream, Inter-Collegiate Business Competition',
-      '1st Place, TD Securities Investment Banking Case',
-      '1st Place, CIRI Capital Power Investor Relations Case Competition',
-      'Local Finalist, CFA Research Challenge',
-      'RBC Fast Pitch Semifinalist, 2025',
-    ],
+    logo: 'assets/profile-logos/haskayne.jpeg',
+    items: ['Finance concentration at the University of Calgary.'],
   },
   {
     title: 'Henry Wise Wood High School',
     meta: '2017 - 2021',
+    logo: 'assets/profile-logos/henry-wise-wood.jpeg',
     items: ['Graduated with 95% overall.'],
   },
 ];
@@ -479,7 +578,7 @@ const PROFILE_EDUCATION = [
 const PROFILE_AWARDS = [
   '1st Place at CIRI Capital Power Buy-Side Target Case Competition',
   '1st Place at TD Securities Investment Banking Case Competition',
-  'Top 3 Finalist, Finance Stream, Inter-Collegiate Business Competition',
+  'Top 3 Finalist, Finance Stream, Inter-Collegiate Business Competition 2026',
   'Local Finalist, CFA Research Challenge',
   'RBC Fast Pitch Semifinalist, 2025',
 ];
@@ -494,8 +593,16 @@ const PROFILE_LEADERSHIP = [
 ];
 
 const PROFILE_CERTIFICATIONS = [
-  'Corporate Valuation for M&A and Capital Markets - Training The Street',
-  'Financial Modeling Certification - Financial Modeling Institute',
+  {
+    title: 'Corporate Valuation for M&A and Capital Markets',
+    issuer: 'Training The Street',
+    logo: 'assets/profile-logos/training-the-street.jpeg',
+  },
+  {
+    title: 'Financial Modeling Certification',
+    issuer: 'Financial Modeling Institute',
+    logo: 'assets/profile-logos/fmi.jpeg',
+  },
 ];
 
 const PROFILE_SKILLS = [
@@ -516,10 +623,16 @@ function profileStats() {
     </div>`).join('');
 }
 
-function profileTimeline() {
+function profileTimeline(prefix) {
   return PROFILE_TIMELINE.map((item, index) => `
     <article class="progression-item">
-      <div class="progression-marker">${String(index + 1).padStart(2, '0')}</div>
+      <div class="progression-marker">
+        <span>${String(index + 1).padStart(2, '0')}</span>
+        <span class="progression-logo">
+          <span>${escapeHtml(item.initials)}</span>
+          <img src="${prefix}${escapeHtml(item.logo)}" alt="" loading="lazy">
+        </span>
+      </div>
       <div class="progression-content">
         <span>${escapeHtml(item.period)}</span>
         <h3>${escapeHtml(item.role)}</h3>
@@ -529,14 +642,22 @@ function profileTimeline() {
     </article>`).join('');
 }
 
-function profileEducation() {
+function profileEducation(prefix) {
   return PROFILE_EDUCATION.map((item) => `
     <article class="profile-list-block">
-      <h3>${escapeHtml(item.title)}</h3>
+      <h3><span class="profile-mini-logo"><img src="${prefix}${escapeHtml(item.logo)}" alt="" loading="lazy"></span>${escapeHtml(item.title)}</h3>
       <p>${escapeHtml(item.meta)}</p>
       <ul>
         ${item.items.map((entry) => `<li>${escapeHtml(entry)}</li>`).join('')}
       </ul>
+    </article>`).join('');
+}
+
+function profileCertifications(prefix) {
+  return PROFILE_CERTIFICATIONS.map((item) => `
+    <article class="profile-list-block">
+      <h3><span class="profile-mini-logo"><img src="${prefix}${escapeHtml(item.logo)}" alt="" loading="lazy"></span>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.issuer)}</p>
     </article>`).join('');
 }
 
@@ -552,16 +673,13 @@ function profileDetailsSection(prefix) {
             <h2>Experience & Progression</h2>
             <p>A concise view of the operating, valuation, and leadership experience behind the research work on this site.</p>
           </div>
-          <div class="profile-stats">
-            ${profileStats()}
-          </div>
           <div class="progression-shell">
-            ${profileTimeline()}
+            ${profileTimeline(prefix)}
           </div>
           <div class="profile-grid">
             <section class="profile-panel profile-panel-wide">
               <h2>Education</h2>
-              ${profileEducation()}
+              ${profileEducation(prefix)}
             </section>
             <section class="profile-panel">
               <h2>Awards</h2>
@@ -573,7 +691,7 @@ function profileDetailsSection(prefix) {
             </section>
             <section class="profile-panel">
               <h2>Certifications</h2>
-              ${profileList(PROFILE_CERTIFICATIONS)}
+              ${profileCertifications(prefix)}
             </section>
             <section class="profile-panel">
               <h2>Core Skills</h2>
@@ -595,7 +713,10 @@ function renderAbout(prefix = '../') {
   const image = uniqueImages(page)[0];
   const h1 = blocks.find((block) => block.tag === 'h1')?.text || 'About Me';
   const intro = blocks.filter((block) => block.tag === 'p' && block.text.length < 80).slice(0, 3);
-  const paragraphs = blocks.filter((block) => block.tag === 'p' && block.text.length >= 80 && block.text !== EMAIL);
+  const paragraphs = [
+    'I started building graphics and digital products in my early teens, eventually founding FluxFrame, where I managed 200+ client projects, grew a YouTube channel to 120,000+ subscribers, and learned how execution, accountability, and cash flow shape real businesses.',
+    'My pivot into finance came through the TD Securities M&A Challenge, where transaction analysis showed me I was most engaged in valuation, assumptions, and decision-making under uncertainty. Since then, I have focused on valuation, strategy, and capital allocation, particularly in energy and oil and gas, through NAV models, LBO and liquidation cases, ICBC, Cenovus Energy, and leadership roles in student investment funds.',
+  ];
 
   const body = `
     <main>
@@ -612,7 +733,10 @@ function renderAbout(prefix = '../') {
             <div class="about-kicker">
               ${intro.map((block) => `<div>${escapeHtml(block.text)}</div>`).join('')}
             </div>
-            ${paragraphs.map((block) => `<p>${escapeHtml(block.text)}</p>`).join('')}
+            <div class="about-proof-stats">
+              ${profileStats()}
+            </div>
+            ${paragraphs.map((text, index) => `<p>${index === 1 ? renderReportParagraph(text, { text: 'valuation, strategy, and capital allocation, particularly in energy and oil and gas' }) : escapeHtml(text)}</p>`).join('')}
           </div>
         </div>
       </section>
@@ -720,12 +844,17 @@ function renderReport(slug, prefix = '../') {
 
   const body = `
     <main>
-      <section class="dark-band report-hero">
-        <div class="wrap">
-          <h1>${escapeHtml(data.title)}</h1>
-          ${meta ? `<div class="report-meta">${meta}</div>` : ''}
+      <section class="dark-band report-hero report-hero-modern">
+        <div class="wrap report-hero-grid">
+          <div class="report-title-panel">
+            <a class="report-back-link" href="${homeHref(prefix)}">All reports <span>→</span></a>
+            <h1>${escapeHtml(data.title)}</h1>
+          </div>
+          <aside class="report-context-panel">
+            ${meta ? `<div class="report-meta">${meta}</div>` : ''}
+            ${pdfButton ? `<div class="button-row">${pdfButton}</div>` : ''}
+          </aside>
           ${data.paragraphs.length ? `<div class="report-copy">${reportCopyHtml}</div>` : ''}
-          ${pdfButton ? `<div class="button-row">${pdfButton}</div>` : ''}
         </div>
       </section>
       <section class="cream-band slide-gallery">

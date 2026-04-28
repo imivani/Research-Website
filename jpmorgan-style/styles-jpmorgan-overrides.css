@@ -429,6 +429,67 @@ html[data-theme="dark"] .theme-toggle-dot {
   font-family: var(--sans);
 }
 
+.featured-reports {
+  background: var(--jpm-white);
+  color: var(--jpm-ink);
+}
+
+.featured-carousel-copy h2 {
+  color: var(--jpm-ink);
+  font-family: var(--serif);
+  font-weight: 300;
+}
+
+.featured-report-eyebrow,
+.featured-carousel-copy p,
+.featured-carousel-controls,
+.featured-report-action {
+  color: var(--jpm-ink);
+  font-family: var(--sans);
+}
+
+.featured-report-eyebrow {
+  color: var(--jpm-brown);
+}
+
+.featured-report-index {
+  color: var(--jpm-brown);
+  font-family: var(--serif);
+  font-weight: 300;
+}
+
+.featured-carousel-media {
+  background: var(--jpm-white);
+  box-shadow: none;
+}
+
+.featured-carousel-copy p {
+  color: #3f403d;
+}
+
+.featured-report-action {
+  border-color: transparent;
+  background: #b9e6fb;
+  color: var(--jpm-ink);
+}
+
+.featured-report-action:hover,
+.featured-report-action:focus-visible,
+.featured-carousel-controls button:hover,
+.featured-carousel-controls button:focus-visible {
+  background: var(--jpm-brown);
+  color: #ffffff;
+  border-color: var(--jpm-brown);
+}
+
+.featured-carousel-dots button {
+  color: rgba(143, 90, 57, 0.62);
+}
+
+.featured-carousel-dots button.is-active {
+  color: var(--jpm-brown);
+}
+
 .report-card[data-featured="true"] figure::after {
   background: var(--jpm-brown);
   color: #ffffff;
@@ -552,9 +613,22 @@ html[data-theme="dark"] .report-card-overlay {
 
 .about-copy p {
   font-family: var(--serif);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 300;
   line-height: 1.42;
+}
+
+.about-proof-stats {
+  border-color: var(--jpm-line);
+}
+
+.about-proof-stats .profile-stat {
+  border-color: rgba(143, 90, 57, 0.24);
+}
+
+.about-copy .copy-passage {
+  color: var(--jpm-brown-dark);
+  font-weight: 400;
 }
 
 .profile-details {
@@ -582,7 +656,7 @@ html[data-theme="dark"] .report-card-overlay {
 
 .profile-intro p,
 .profile-stat span,
-.progression-content span,
+.progression-content > span,
 .progression-content h4,
 .progression-content p,
 .profile-panel h3,
@@ -611,12 +685,26 @@ html[data-theme="dark"] .report-card-overlay {
   transition: background 260ms ease, padding-left 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.progression-logo {
+  border-color: rgba(143, 90, 57, 0.28);
+  background: var(--jpm-white);
+  color: var(--jpm-brown);
+  box-shadow: 0 8px 18px rgba(32, 32, 32, 0.08);
+  font-family: var(--sans);
+  text-transform: uppercase;
+}
+
+.profile-mini-logo {
+  border-color: rgba(143, 90, 57, 0.28);
+  background: var(--jpm-white);
+}
+
 .progression-item:hover {
   background: rgba(143, 90, 57, 0.055);
   padding-left: 18px;
 }
 
-.progression-content span {
+.progression-content > span {
   color: #6a635c;
   font-size: 14px;
   font-weight: 700;
@@ -645,7 +733,7 @@ html[data-theme="dark"] .profile-details {
 
 html[data-theme="dark"] .profile-intro p,
 html[data-theme="dark"] .progression-content p,
-html[data-theme="dark"] .progression-content span {
+html[data-theme="dark"] .progression-content > span {
   color: #d6c9be;
 }
 
@@ -657,17 +745,67 @@ html[data-theme="dark"] .skill-cloud span {
   background: rgba(255, 255, 255, 0.04);
 }
 
+html[data-theme="dark"] .featured-carousel-copy p {
+  color: #d6c9be;
+}
+
+html[data-theme="dark"] .featured-carousel-media {
+  background: var(--jpm-paper-soft);
+  box-shadow: 0 28px 66px rgba(0, 0, 0, 0.34);
+}
+
+html[data-theme="dark"] .progression-logo {
+  background: var(--jpm-paper-soft);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.24);
+}
+
 .report-meta {
   color: var(--jpm-brown);
   font-family: var(--serif);
   font-weight: 300;
 }
 
+.report-hero-grid {
+  max-width: 1220px;
+}
+
+.report-hero-grid::before {
+  margin-bottom: 0;
+}
+
+.report-title-panel h1 {
+  margin-bottom: 0;
+}
+
+.report-context-panel {
+  padding: 24px 0 0;
+  border-top: 1px solid var(--jpm-line);
+}
+
+.report-back-link {
+  border-color: var(--jpm-brown);
+  color: var(--jpm-ink);
+  font-family: var(--sans);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.report-back-link:hover,
+.report-back-link:focus-visible {
+  background: var(--jpm-brown);
+  color: #ffffff;
+}
+
 .report-meta .small {
   color: var(--jpm-ink);
   font-family: var(--sans);
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
+}
+
+.report-meta {
+  gap: 14px;
+  font-size: clamp(24px, 3vw, 36px);
 }
 
 .report-copy p {
