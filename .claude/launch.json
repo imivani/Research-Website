@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "C:\\Users\\busin.IVANS-OFFICE-PC\\OneDrive\\Documents\\Codex\\Research Website"],
+      "port": 8765
+    }
+  ]
+}

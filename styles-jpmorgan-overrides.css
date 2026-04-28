@@ -440,6 +440,10 @@ html[data-theme="dark"] .theme-toggle-dot {
   font-weight: 300;
 }
 
+.featured-carousel-copy {
+  background: var(--jpm-white);
+}
+
 .featured-report-eyebrow,
 .featured-carousel-copy p,
 .featured-carousel-controls,
@@ -465,6 +469,12 @@ html[data-theme="dark"] .theme-toggle-dot {
 
 .featured-carousel-copy p {
   color: #3f403d;
+}
+
+.featured-image-mark {
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--featured-accent, var(--jpm-brown));
+  font-family: var(--sans);
 }
 
 .featured-report-action {
@@ -749,9 +759,18 @@ html[data-theme="dark"] .featured-carousel-copy p {
   color: #d6c9be;
 }
 
+html[data-theme="dark"] .featured-carousel-copy {
+  background: var(--jpm-white);
+}
+
+html[data-theme="dark"] .featured-image-mark {
+  background: rgba(15, 12, 10, 0.78);
+  color: #ffffff;
+}
+
 html[data-theme="dark"] .featured-carousel-media {
   background: var(--jpm-paper-soft);
-  box-shadow: 0 28px 66px rgba(0, 0, 0, 0.34);
+  box-shadow: none;
 }
 
 html[data-theme="dark"] .progression-logo {
@@ -808,6 +827,33 @@ html[data-theme="dark"] .progression-logo {
   font-size: clamp(24px, 3vw, 36px);
 }
 
+.report-snapshot,
+.report-snapshot-item,
+.report-insight,
+.gallery-heading {
+  border-color: var(--jpm-line);
+}
+
+.report-snapshot-item span,
+.report-insight span,
+.gallery-heading p {
+  color: var(--jpm-brown);
+  font-family: var(--sans);
+}
+
+.report-snapshot-item strong {
+  color: var(--jpm-ink);
+  font-family: var(--sans);
+  font-size: 16px;
+}
+
+.report-insight p,
+.gallery-heading h2 {
+  color: var(--jpm-ink);
+  font-family: var(--serif);
+  font-weight: 300;
+}
+
 .report-copy p {
   max-width: 1080px;
   font-family: var(--serif);
@@ -819,6 +865,11 @@ html[data-theme="dark"] .progression-logo {
 .report-copy .copy-passage {
   color: var(--jpm-brown-dark);
   font-weight: 400;
+  background: rgba(143, 90, 57, 0.1);
+}
+
+html[data-theme="dark"] .report-copy .copy-passage {
+  background: rgba(185, 130, 92, 0.16);
 }
 
 .button {
@@ -1003,3 +1054,39 @@ html[data-theme="dark"] .button {
     font-size: 21px;
   }
 }
+
+body[data-report-slug] main::before {
+  content: "";
+  display: block;
+  height: 18px;
+  background: var(--report-accent, var(--jpm-brown));
+}
+
+body[data-report-slug="altagas"] { --report-accent: #1a5276; }
+body[data-report-slug="ameritrade"] { --report-accent: #0a6a4f; }
+body[data-report-slug="ashfield-industries-dungaven-acquisition"] { --report-accent: #6e3a2c; }
+body[data-report-slug="btma-og-data-to-drive-commercial-decisions"] { --report-accent: #4a2566; }
+body[data-report-slug="cataraqui-building-supplies"] { --report-accent: #8b572a; }
+body[data-report-slug="diamond"] { --report-accent: #5b8aa0; }
+body[data-report-slug="galaxyresources"] { --report-accent: #2b3961; }
+body[data-report-slug="griffiths-energy-international"] { --report-accent: #b25b1e; }
+body[data-report-slug="hydroone"] { --report-accent: #0b2a5b; }
+body[data-report-slug="lakeshore-plumbing"] { --report-accent: #166fa3; }
+body[data-report-slug="markle"] { --report-accent: #555c4f; }
+body[data-report-slug="newearth"] { --report-accent: #3e6e3a; }
+body[data-report-slug="nfi-group"] { --report-accent: #5a2c8c; }
+body[data-report-slug="parks-capital"] { --report-accent: #1f4e4a; }
+body[data-report-slug="ptarmigan"] { --report-accent: #6e7a4f; }
+body[data-report-slug="quintessentially-canadian"] { --report-accent: #c0392b; }
+body[data-report-slug="rogers"] { --report-accent: #c8102e; }
+body[data-report-slug="sanctions"] { --report-accent: #4d4d4d; }
+body[data-report-slug="sde"] { --report-accent: #1f4e2a; }
+body[data-report-slug="sdeonepager"] { --report-accent: #1f4e2a; }
+body[data-report-slug="sketch"] { --report-accent: #d97706; }
+body[data-report-slug="techmajority"] { --report-accent: #16a085; }
+body[data-report-slug="the-lehman-brothers-collapse"] { --report-accent: #8b1a1a; }
+body[data-report-slug="walmart"] { --report-accent: #0071ce; }
+body[data-report-slug="westmillscarpet"] { --report-accent: #6f4423; }
+body[data-report-slug="weyerhaeuser-beyond-lumber"] { --report-accent: #3a5a40; }
+body[data-report-slug="windfarm"] { --report-accent: #4a90b8; }
+body[data-report-slug="xeqt"] { --report-accent: #1f5fa3; }

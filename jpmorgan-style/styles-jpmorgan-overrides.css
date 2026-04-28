@@ -440,6 +440,10 @@ html[data-theme="dark"] .theme-toggle-dot {
   font-weight: 300;
 }
 
+.featured-carousel-copy {
+  background: var(--jpm-white);
+}
+
 .featured-report-eyebrow,
 .featured-carousel-copy p,
 .featured-carousel-controls,
@@ -465,6 +469,12 @@ html[data-theme="dark"] .theme-toggle-dot {
 
 .featured-carousel-copy p {
   color: #3f403d;
+}
+
+.featured-image-mark {
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--featured-accent, var(--jpm-brown));
+  font-family: var(--sans);
 }
 
 .featured-report-action {
@@ -749,9 +759,18 @@ html[data-theme="dark"] .featured-carousel-copy p {
   color: #d6c9be;
 }
 
+html[data-theme="dark"] .featured-carousel-copy {
+  background: var(--jpm-white);
+}
+
+html[data-theme="dark"] .featured-image-mark {
+  background: rgba(15, 12, 10, 0.78);
+  color: #ffffff;
+}
+
 html[data-theme="dark"] .featured-carousel-media {
   background: var(--jpm-paper-soft);
-  box-shadow: 0 28px 66px rgba(0, 0, 0, 0.34);
+  box-shadow: none;
 }
 
 html[data-theme="dark"] .progression-logo {
@@ -808,6 +827,33 @@ html[data-theme="dark"] .progression-logo {
   font-size: clamp(24px, 3vw, 36px);
 }
 
+.report-snapshot,
+.report-snapshot-item,
+.report-insight,
+.gallery-heading {
+  border-color: var(--jpm-line);
+}
+
+.report-snapshot-item span,
+.report-insight span,
+.gallery-heading p {
+  color: var(--jpm-brown);
+  font-family: var(--sans);
+}
+
+.report-snapshot-item strong {
+  color: var(--jpm-ink);
+  font-family: var(--sans);
+  font-size: 16px;
+}
+
+.report-insight p,
+.gallery-heading h2 {
+  color: var(--jpm-ink);
+  font-family: var(--serif);
+  font-weight: 300;
+}
+
 .report-copy p {
   max-width: 1080px;
   font-family: var(--serif);
@@ -819,6 +865,11 @@ html[data-theme="dark"] .progression-logo {
 .report-copy .copy-passage {
   color: var(--jpm-brown-dark);
   font-weight: 400;
+  background: rgba(143, 90, 57, 0.1);
+}
+
+html[data-theme="dark"] .report-copy .copy-passage {
+  background: rgba(185, 130, 92, 0.16);
 }
 
 .button {

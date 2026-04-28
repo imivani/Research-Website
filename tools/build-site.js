@@ -389,9 +389,10 @@ function renderFeaturedShowcase(prefix = '') {
   const slides = FEATURED_REPORTS.map((report, index) => {
     const imageHtml = `<img src="${prefix}${escapeHtml(report.featuredImage)}" alt="${escapeHtml(report.featuredAlt)}" loading="${index === 0 ? 'eager' : 'lazy'}">`;
     return `
-      <article class="featured-carousel-slide${index === 0 ? ' is-active' : ''}" data-featured-slide="${index}" aria-hidden="${index === 0 ? 'false' : 'true'}">
+      <article class="featured-carousel-slide${index === 0 ? ' is-active' : ''}" data-featured-slide="${index}" aria-hidden="${index === 0 ? 'false' : 'true'}" style="--featured-accent: ${report.accent}; --featured-tint: ${report.tint}; --featured-soft: ${report.soft};">
         <a class="featured-carousel-media" href="${pageHref(prefix, report.slug)}">
           ${imageHtml}
+          <span class="featured-image-mark" aria-hidden="true">${escapeHtml(report.imageMark)}</span>
         </a>
         <div class="featured-carousel-copy">
           <span class="featured-report-index">${String(index + 1).padStart(2, '0')}</span>
@@ -477,27 +478,39 @@ const PROFILE_STATS = [
 const FEATURED_REPORTS = [
   {
     slug: 'hydroone',
-    title: 'Hydro One Cost of Capital',
+    title: 'Hydro One - Cost of Capital',
     eyebrow: 'I.C.B.C Finance',
     description: 'A regulator-focused WACC and valuation case built around allowed ROE, policy risk, and Canadian utility market mechanics.',
     featuredImage: 'assets/featured/hydro-one-transmission.jpg',
     featuredAlt: 'Hydro One transmission towers and power lines in Ontario',
+    imageMark: 'Hydro One',
+    accent: '#2e75b8',
+    tint: 'rgba(46, 117, 184, 0.26)',
+    soft: '#b9e6fb',
   },
   {
     slug: 'rogers',
     title: 'Rogers Communications',
     eyebrow: 'I.C.B.C Finals',
     description: 'A finals case balancing strategic alternatives, capital allocation, and telecommunications operating realities under time pressure.',
-    featuredImage: 'assets/featured/rogers-passive-infrastructure.jpg',
-    featuredAlt: 'Telecommunications infrastructure poles and wires',
+    featuredImage: 'assets/featured/rogers-5g-towers-aerial.jpg',
+    featuredAlt: 'Rogers wireless tower infrastructure over a forested highway corridor',
+    imageMark: 'Rogers',
+    accent: '#c8102e',
+    tint: 'rgba(200, 16, 46, 0.24)',
+    soft: '#ffd7dc',
   },
   {
     slug: 'sde',
     title: 'Spartan Delta Research',
     eyebrow: 'Equity Research',
     description: 'Energy-focused public equity research combining asset-level valuation, peer benchmarking, and investment thesis development.',
-    featuredImage: 'assets/featured/spartan-delta-alberta-well.webp',
-    featuredAlt: 'Oil and gas well infrastructure in Alberta',
+    featuredImage: 'assets/featured/spartan-delta-operations.png',
+    featuredAlt: 'Spartan Delta operating landscape with pumpjacks and Alberta foothills',
+    imageMark: 'Spartan Delta',
+    accent: '#2d6b3f',
+    tint: 'rgba(45, 107, 63, 0.25)',
+    soft: '#c7e7cf',
   },
   {
     slug: 'altagas',
@@ -506,6 +519,10 @@ const FEATURED_REPORTS = [
     description: 'Institutional-quality fundamental research supported by detailed financial modeling, peer valuation, and strategic analysis.',
     featuredImage: 'assets/featured/altagas-ripet.jpg',
     featuredAlt: 'AltaGas Ridley Island Propane Export Terminal from above',
+    imageMark: 'AltaGas',
+    accent: '#0b5d88',
+    tint: 'rgba(11, 93, 136, 0.24)',
+    soft: '#c8e9f6',
   },
 ];
 
@@ -824,6 +841,38 @@ function renderReportParagraph(text, passage) {
   return `${escaped.slice(0, index)}<strong class="copy-passage">${escapedPassage}</strong>${escaped.slice(index + escapedPassage.length)}`;
 }
 
+function categoryForSlug(slug) {
+  const group = HOME_GROUPS.find((section) => section.items.some(([itemSlug]) => itemSlug === slug));
+  return group?.title || 'Selected research';
+}
+
+function reportDate(data) {
+  return data.meta.find((block) => /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b.*\b20\d{2}\b|\b20\d{2}\b/i.test(block.text))?.text || 'Portfolio work';
+}
+
+function reportContext(data, slug) {
+  return data.meta.find((block) => !/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|20\d{2}|Team Members|Constraints|Time Constraint)\b/i.test(block.text))?.text
+    || categoryForSlug(slug);
+}
+
+function renderReportSnapshot(data, slug) {
+  const facts = [
+    ['Context', reportContext(data, slug)],
+    ['Date', reportDate(data)],
+    ['Gallery', `${data.images.length} visual${data.images.length === 1 ? '' : 's'}`],
+    ['Output', data.pdf ? 'PDF available' : 'Case deck'],
+  ];
+
+  return `
+    <div class="report-snapshot" aria-label="Report snapshot">
+      ${facts.map(([label, value]) => `
+        <div class="report-snapshot-item">
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(value)}</strong>
+        </div>`).join('')}
+    </div>`;
+}
+
 function renderReport(slug, prefix = '../') {
   const data = reportData(slug);
   const meta = data.meta.map((block, index) => {
@@ -837,6 +886,11 @@ function renderReport(slug, prefix = '../') {
       <img src="${localAsset(image.src, prefix)}" alt="${escapeHtml(image.alt || data.title)}" loading="lazy">
     </figure>`).join('');
   const passage = selectedPassage(data.paragraphs);
+  const insight = passage ? `
+    <aside class="report-insight">
+      <span>Key read</span>
+      <p>${escapeHtml(passage.text)}</p>
+    </aside>` : '';
   const reportCopyHtml = data.paragraphs.map((paragraph, index) => {
     const paragraphPassage = passage?.paragraphIndex === index ? passage : null;
     return `<p>${renderReportParagraph(paragraph, paragraphPassage)}</p>`;
@@ -854,11 +908,17 @@ function renderReport(slug, prefix = '../') {
             ${meta ? `<div class="report-meta">${meta}</div>` : ''}
             ${pdfButton ? `<div class="button-row">${pdfButton}</div>` : ''}
           </aside>
+          ${renderReportSnapshot(data, slug)}
+          ${insight}
           ${data.paragraphs.length ? `<div class="report-copy">${reportCopyHtml}</div>` : ''}
         </div>
       </section>
       <section class="cream-band slide-gallery">
         <div class="wrap">
+          <div class="gallery-heading">
+            <h2>Report Gallery</h2>
+            <p>${data.images.length} visual${data.images.length === 1 ? '' : 's'} from the underlying deck and analysis.</p>
+          </div>
           <div class="slides">
             ${slides}
           </div>

@@ -307,6 +307,11 @@
         slide.classList.toggle('is-active', isActive);
         slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
       });
+      const activeSlide = slides[activeIndex];
+      ['--featured-accent', '--featured-tint', '--featured-soft'].forEach((property) => {
+        const value = activeSlide.style.getPropertyValue(property);
+        if (value) carousel.style.setProperty(property, value);
+      });
       dots.forEach((dot, dotIndex) => {
         const isActive = dotIndex === activeIndex;
         dot.classList.toggle('is-active', isActive);
