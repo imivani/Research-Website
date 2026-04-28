@@ -15,7 +15,7 @@
 
   function setupReveal() {
     const items = [
-      ...document.querySelectorAll('.home-hero .wrap, .section-head .wrap, .page-hero .wrap, .report-hero .wrap, .gallery-block .wrap, .about-photo, .about-copy > *, .report-card, .slide-card, .button-row'),
+      ...document.querySelectorAll('.home-hero .wrap, .section-head .wrap, .page-hero .wrap, .report-hero .wrap, .gallery-block .wrap, .about-photo, .about-copy > *, .profile-intro, .profile-stat, .progression-item, .profile-panel, .report-card, .slide-card, .button-row'),
     ];
 
     items.forEach((item, index) => {

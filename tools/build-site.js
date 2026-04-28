@@ -330,7 +330,13 @@ function renderCard(item, image, prefix, group, index) {
   return `
     <a class="report-card ${extraClass}" href="${pageHref(prefix, slug)}" data-report-card data-title="${escapeHtml(title)}" data-category="${escapeHtml(group.category)}" data-featured="${featured}" data-index="${index}">
       <figure>
-        ${src ? `<img src="${src}" alt="${escapeHtml(image.alt || title)}" loading="lazy">` : ''}
+        <span class="report-card-media">
+          ${src ? `<img src="${src}" alt="${escapeHtml(image.alt || title)}" loading="lazy">` : ''}
+          <span class="report-card-overlay" aria-hidden="true">
+            <span class="report-card-title">${escapeHtml(title)}</span>
+            <span class="report-card-action">View report <span>→</span></span>
+          </span>
+        </span>
         <figcaption>${escapeHtml(title)}</figcaption>
       </figure>
     </a>`;
@@ -405,6 +411,184 @@ function renderHome(prefix = '') {
   });
 }
 
+const PROFILE_STATS = [
+  { value: '7+', label: 'years client-facing business experience' },
+  { value: '2+', label: 'years energy-focused valuation experience' },
+  { value: '200+', label: 'client projects delivered through FluxFrame' },
+  { value: '500+', label: 'professional connections' },
+];
+
+const PROFILE_TIMELINE = [
+  {
+    period: '2018 - 2024',
+    role: 'Co-Founder',
+    org: 'FluxFrame Digital',
+    detail: 'Bootstrapped and scaled a web and graphic design firm to peak $20K monthly net income, delivering 200+ client projects while building early operating, client management, and execution discipline.',
+  },
+  {
+    period: 'May - Sep 2024',
+    role: 'Finance Intern, Commercial Real Estate',
+    org: 'Manchester Properties Inc.',
+    detail: 'Supported commercial real estate finance work across a portfolio with approximately $50M in assets under administration.',
+  },
+  {
+    period: 'Sep 2024 - Aug 2025',
+    role: 'Commercial Decision Analyst, Co-op',
+    org: 'Cenovus Energy',
+    detail: 'Supported upstream and downstream commercial decision-making through economic reporting, financial modeling, and materials for commercial leadership.',
+  },
+  {
+    period: 'Aug 2025 - Jan 2026',
+    role: 'Strategic Delivery Analyst, Contract',
+    org: 'Cenovus Energy',
+    detail: 'Supported executive-level reporting and financial analysis for senior downstream commercial leadership, including advanced modeling for Branded Dealer Cardlock sites.',
+  },
+  {
+    period: 'Jan 2026 - Present',
+    role: 'Teaching Assistant, SGMA 668',
+    org: 'Haskayne School of Business',
+    detail: 'Teaching assistant for MBA Acquisitions in Entrepreneurship.',
+  },
+  {
+    period: 'Apr 2026 - Present',
+    role: 'Summer Analyst, Global Transaction Banking',
+    org: 'CIBC Capital Markets',
+    detail: 'Started as a Global Transaction Banking Summer Analyst at CIBC Capital Markets.',
+  },
+];
+
+const PROFILE_EDUCATION = [
+  {
+    title: 'Haskayne School of Business',
+    meta: 'Bachelor of Commerce, Finance - 2027',
+    items: [
+      'Top 3 Finalist, Finance Stream, Inter-Collegiate Business Competition',
+      '1st Place, TD Securities Investment Banking Case',
+      '1st Place, CIRI Capital Power Investor Relations Case Competition',
+      'Local Finalist, CFA Research Challenge',
+      'RBC Fast Pitch Semifinalist, 2025',
+    ],
+  },
+  {
+    title: 'Henry Wise Wood High School',
+    meta: '2017 - 2021',
+    items: ['Graduated with 95% overall.'],
+  },
+];
+
+const PROFILE_AWARDS = [
+  '1st Place at CIRI Capital Power Buy-Side Target Case Competition',
+  '1st Place at TD Securities Investment Banking Case Competition',
+  'Top 3 Finalist, Finance Stream, Inter-Collegiate Business Competition',
+  'Local Finalist, CFA Research Challenge',
+  'RBC Fast Pitch Semifinalist, 2025',
+];
+
+const PROFILE_LEADERSHIP = [
+  'Vice President, Equity Research - Haskayne Finance Club',
+  'COO - DeNovo Student Investment Fund',
+  'Portfolio Manager, Energy - DeNovo Student Investment Fund',
+  'Equity Research Analyst - Haskayne Finance Club',
+  'VP Finance - Tech Start UCalgary',
+  'Student Ambassador - Cenovus Energy',
+];
+
+const PROFILE_CERTIFICATIONS = [
+  'Corporate Valuation for M&A and Capital Markets - Training The Street',
+  'Financial Modeling Certification - Financial Modeling Institute',
+];
+
+const PROFILE_SKILLS = [
+  'Financial Modeling',
+  'Microsoft Excel',
+  'Quantitative Analytics',
+  'Finance',
+  'Oil and Gas',
+  'Equity Research',
+  'Corporate Research',
+];
+
+function profileStats() {
+  return PROFILE_STATS.map((item) => `
+    <div class="profile-stat">
+      <strong>${escapeHtml(item.value)}</strong>
+      <span>${escapeHtml(item.label)}</span>
+    </div>`).join('');
+}
+
+function profileTimeline() {
+  return PROFILE_TIMELINE.map((item, index) => `
+    <article class="progression-item">
+      <div class="progression-marker">${String(index + 1).padStart(2, '0')}</div>
+      <div class="progression-content">
+        <span>${escapeHtml(item.period)}</span>
+        <h3>${escapeHtml(item.role)}</h3>
+        <h4>${escapeHtml(item.org)}</h4>
+        <p>${escapeHtml(item.detail)}</p>
+      </div>
+    </article>`).join('');
+}
+
+function profileEducation() {
+  return PROFILE_EDUCATION.map((item) => `
+    <article class="profile-list-block">
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.meta)}</p>
+      <ul>
+        ${item.items.map((entry) => `<li>${escapeHtml(entry)}</li>`).join('')}
+      </ul>
+    </article>`).join('');
+}
+
+function profileList(items) {
+  return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+}
+
+function profileDetailsSection(prefix) {
+  return `
+      <section class="cream-band profile-details">
+        <div class="wrap">
+          <div class="profile-intro">
+            <h2>Experience & Progression</h2>
+            <p>A concise view of the operating, valuation, and leadership experience behind the research work on this site.</p>
+          </div>
+          <div class="profile-stats">
+            ${profileStats()}
+          </div>
+          <div class="progression-shell">
+            ${profileTimeline()}
+          </div>
+          <div class="profile-grid">
+            <section class="profile-panel profile-panel-wide">
+              <h2>Education</h2>
+              ${profileEducation()}
+            </section>
+            <section class="profile-panel">
+              <h2>Awards</h2>
+              ${profileList(PROFILE_AWARDS)}
+            </section>
+            <section class="profile-panel">
+              <h2>Leadership</h2>
+              ${profileList(PROFILE_LEADERSHIP)}
+            </section>
+            <section class="profile-panel">
+              <h2>Certifications</h2>
+              ${profileList(PROFILE_CERTIFICATIONS)}
+            </section>
+            <section class="profile-panel">
+              <h2>Core Skills</h2>
+              <div class="skill-cloud">
+                ${PROFILE_SKILLS.map((skill) => `<span>${escapeHtml(skill)}</span>`).join('')}
+              </div>
+            </section>
+          </div>
+          <div class="button-row profile-actions">
+            <a class="button" href="${homeHref(prefix)}">Back to Home</a>
+          </div>
+        </div>
+      </section>`;
+}
+
 function renderAbout(prefix = '../') {
   const page = pageForSlug('about');
   const blocks = page.blocks || [];
@@ -429,10 +613,10 @@ function renderAbout(prefix = '../') {
               ${intro.map((block) => `<div>${escapeHtml(block.text)}</div>`).join('')}
             </div>
             ${paragraphs.map((block) => `<p>${escapeHtml(block.text)}</p>`).join('')}
-            <p><a class="button" href="${homeHref(prefix)}">Back to Home</a></p>
           </div>
         </div>
       </section>
+      ${profileDetailsSection(prefix)}
     </main>`;
 
   return shell({
