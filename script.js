@@ -191,7 +191,7 @@
     function sortCards() {
       const mode = sort?.value || 'default';
 
-      document.querySelectorAll('.gallery-grid').forEach((grid) => {
+      document.querySelectorAll('.report-index-list').forEach((grid) => {
         const gridCards = [...grid.querySelectorAll('[data-report-card]')];
         const sorted = gridCards.slice().sort((a, b) => {
           const aIndex = Number(a.dataset.index || 0);
@@ -215,7 +215,7 @@
 
     function matchesCard(card) {
       const query = (search?.value || '').trim().toLowerCase();
-      const searchable = `${card.dataset.title || ''} ${card.dataset.category || ''}`.toLowerCase();
+      const searchable = `${card.dataset.search || ''} ${card.dataset.title || ''} ${card.dataset.category || ''}`.toLowerCase();
       const matchesSearch = !query || searchable.includes(query);
       const matchesFilter = activeFilter === 'all'
         || (activeFilter === 'featured' && card.dataset.featured === 'true')
@@ -262,7 +262,7 @@
         const hasVisibleCards = [...section.querySelectorAll('[data-report-card]')].some((card) => !card.hidden);
         section.hidden = !hasVisibleCards;
         if (hasVisibleCards) {
-          const heading = section.querySelector('.section-head .wrap');
+          const heading = section.querySelector('.section-head');
           if (heading) visibleItems.unshift(heading);
         }
       });
@@ -285,6 +285,57 @@
 
     updateFilterButtons();
     applyFilters(false);
+  }
+
+  function setupReportCardImageSizing() {
+    const wrappers = [...document.querySelectorAll('.report-card-image-wrap')];
+    if (!wrappers.length) return;
+
+    const desktop = window.matchMedia('(min-width: 881px)');
+
+    function fitWrapper(wrapper) {
+      const media = wrapper.closest('.report-card-media');
+      const image = wrapper.querySelector('img');
+      if (!media || !image || !image.naturalWidth || !image.naturalHeight) return;
+
+      if (!desktop.matches) {
+        wrapper.style.removeProperty('width');
+        wrapper.style.removeProperty('height');
+        return;
+      }
+
+      const mediaWidth = media.clientWidth;
+      const mediaHeight = media.clientHeight;
+      if (!mediaWidth || !mediaHeight) return;
+
+      const imageRatio = image.naturalWidth / image.naturalHeight;
+      const mediaRatio = mediaWidth / mediaHeight;
+      const width = mediaRatio > imageRatio ? mediaHeight * imageRatio : mediaWidth;
+      const height = mediaRatio > imageRatio ? mediaHeight : mediaWidth / imageRatio;
+
+      wrapper.style.width = `${Math.round(width)}px`;
+      wrapper.style.height = `${Math.round(height)}px`;
+    }
+
+    function fitAll() {
+      wrappers.forEach(fitWrapper);
+    }
+
+    wrappers.forEach((wrapper) => {
+      const image = wrapper.querySelector('img');
+      if (!image) return;
+      if (image.complete) {
+        fitWrapper(wrapper);
+      } else {
+        image.addEventListener('load', () => fitWrapper(wrapper), { once: true });
+      }
+    });
+
+    let frame = 0;
+    window.addEventListener('resize', () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(fitAll);
+    }, { passive: true });
   }
 
   function setupFeaturedCarousel() {
@@ -525,6 +576,7 @@
     setupReveal();
     setupFeaturedCarousel();
     setupReportFilters();
+    setupReportCardImageSizing();
     setupReportSearchToggle();
     setupPageTransitions();
     setupLightbox();

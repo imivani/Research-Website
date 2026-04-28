@@ -7,6 +7,7 @@ const assetManifest = JSON.parse(fs.readFileSync('site-assets.json', 'utf8'));
 const ORIGIN = 'https://imivani.com';
 const EMAIL = 'business@imivani.com';
 const LINKEDIN = 'https://www.linkedin.com/in/imivani/';
+const FAVICON_VERSION = '20260428';
 const LINKEDIN_LABEL = 'linkedin.com/in/imivani';
 
 const ICBC_MENU = [
@@ -40,6 +41,7 @@ const EQUITY_MENU = [
 ];
 
 const SCHOOL_MENU = [
+  ['dateflow', 'DateFlow'],
   ['btma-og-data-to-drive-commercial-decisions', 'O&G Data to Drive Commercial Decisions'],
   ['griffiths-energy-international', 'Griffiths Energy International'],
   ['the-lehman-brothers-collapse', 'The Lehman Brothers Collapse'],
@@ -105,6 +107,7 @@ const HOME_GROUPS = [
     subtitle: 'Assignments & extracurriculars at Haskayne.',
     grid: 'grid-two',
     items: [
+      ['dateflow', 'DateFlow Document-to-Calendar Concept', ''],
       ['btma-og-data-to-drive-commercial-decisions', 'BTMA 317 Final Report', ''],
       ['the-lehman-brothers-collapse', 'Lehman Brothers Collapse', ''],
       ['griffiths-energy-international', 'Governance Case Study', ''],
@@ -141,6 +144,7 @@ function homePage() {
 }
 
 function localAsset(url, prefix) {
+  if (/^assets\//.test(url)) return `${prefix}${url}`;
   const asset = assetByUrl.get(url);
   if (!asset || !asset.localPath) return url;
   return `${prefix}${asset.localPath}`;
@@ -325,11 +329,11 @@ function shell({ title, description, prefix, currentSlug, body }) {
   <meta name="description" content="${escapeHtml(description || 'A collection of research and economic reports.')}">
   <title>${escapeHtml(title)}</title>
   ${themeBoot}
-  <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="manifest" href="/assets/favicon/site.webmanifest">
+  <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico?v=${FAVICON_VERSION}">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png?v=${FAVICON_VERSION}">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png?v=${FAVICON_VERSION}">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png?v=${FAVICON_VERSION}">
+  <link rel="manifest" href="/assets/favicon/site.webmanifest?v=${FAVICON_VERSION}">
   <meta name="theme-color" content="#8f5a39">
   <link rel="stylesheet" href="${prefix}styles.css">
   <link rel="stylesheet" href="${prefix}styles-jpmorgan-overrides.css">
@@ -346,20 +350,32 @@ ${footer()}
 
 function renderCard(item, image, prefix, group, index) {
   const [slug, title, extraClass] = item;
-  const src = image ? localAsset(image.src, prefix) : '';
+  const custom = CUSTOM_REPORTS[slug];
+  const src = custom?.cardImage ? `${prefix}${custom.cardImage}` : image ? localAsset(image.src, prefix) : '';
+  const alt = custom?.cardAlt || image?.alt || title;
   const featured = extraClass.includes('feature') ? 'true' : 'false';
+  const data = reportData(slug);
+  const description = reportCardDescription(slug, title, data);
+  const category = categoryLabel(group.category);
+  const date = reportDate(data, slug);
+  const output = data.download?.output || `${data.images.length} visual${data.images.length === 1 ? '' : 's'}`;
+  const searchable = `${title} ${category} ${date} ${output} ${description}`;
   return `
-    <a class="report-card ${extraClass}" href="${pageHref(prefix, slug)}" data-report-card data-title="${escapeHtml(title)}" data-category="${escapeHtml(group.category)}" data-featured="${featured}" data-index="${index}">
-      <figure>
-        <span class="report-card-media">
-          ${src ? `<img src="${src}" alt="${escapeHtml(image.alt || title)}" loading="lazy">` : ''}
-          <span class="report-card-overlay" aria-hidden="true">
-            <span class="report-card-title">${escapeHtml(title)}</span>
-            <span class="report-card-action">View report <span>→</span></span>
-          </span>
+    <a class="report-card ${extraClass}" href="${pageHref(prefix, slug)}" data-report-card data-title="${escapeHtml(title)}" data-search="${escapeHtml(searchable)}" data-category="${escapeHtml(group.category)}" data-featured="${featured}" data-index="${index}">
+      <span class="report-card-number">${String(index + 1).padStart(2, '0')}</span>
+      <span class="report-card-media">
+        ${src ? `<span class="report-card-image-wrap"><img src="${src}" alt="${escapeHtml(alt)}" loading="lazy"><span class="report-card-hover" aria-hidden="true"><span>View report</span><span class="report-card-hover-arrow">&rarr;</span></span></span>` : ''}
+      </span>
+      <span class="report-card-body">
+        <span class="report-card-kicker">
+          <span>${escapeHtml(category)}</span>
+          <span>${escapeHtml(date)}</span>
+          <span>${escapeHtml(output)}</span>
         </span>
-        <figcaption>${escapeHtml(title)}</figcaption>
-      </figure>
+        <span class="report-card-title">${escapeHtml(title)}</span>
+        <span class="report-card-description">${escapeHtml(description)}</span>
+        <span class="report-card-action">View report <span>&rarr;</span></span>
+      </span>
     </a>`;
 }
 
@@ -451,18 +467,21 @@ function renderHome(prefix = '') {
     const cards = group.items.map((item) => renderCard(item, images[imageIndex++], prefix, group, cardIndex++)).join('');
     const sectionNumber = String(index + 1).padStart(2, '0');
     const head = `
-      <section class="dark-band section-head">
-        <div class="wrap">
-          <h2 data-section-number="${sectionNumber}">${escapeHtml(group.title)}</h2>
-          <p>${escapeHtml(group.subtitle)}</p>
+      <div class="section-head">
+        <div>
+          <span>${sectionNumber}</span>
+          <h2>${escapeHtml(group.title)}</h2>
         </div>
-      </section>`;
-    return `<div class="report-group" data-report-section data-category="${escapeHtml(group.category)}">${head}
-      <section class="cream-band gallery-block">
-        <div class="wrap gallery-grid ${group.grid}">
+        <p>${escapeHtml(group.subtitle)}</p>
+      </div>`;
+    return `<section class="report-group" data-report-section data-category="${escapeHtml(group.category)}">
+      <div class="wrap report-block ${index % 2 === 1 ? 'report-block-charcoal' : ''}">
+        ${head}
+        <div class="report-feature-list">
           ${cards}
         </div>
-      </section></div>`;
+      </div>
+    </section>`;
   }).join('');
 
   return shell({
@@ -530,7 +549,63 @@ const FEATURED_REPORTS = [
     tint: 'rgba(11, 93, 136, 0.24)',
     soft: '#c8e9f6',
   },
+  {
+    slug: 'dateflow',
+    title: 'DateFlow',
+    eyebrow: 'ENTI 317 Slide Deck',
+    description: 'A document-to-calendar platform concept presented through a clean student venture slide deck.',
+    featuredImage: 'assets/dateflow/dateflow-deck-page-01.png',
+    featuredAlt: 'DateFlow blue slide deck cover page',
+    imageMark: 'DateFlow',
+    accent: '#2a7fb8',
+    tint: 'rgba(42, 127, 184, 0.22)',
+    soft: '#d8efff',
+  },
 ];
+
+const REPORT_DATE_OVERRIDES = {
+  hydroone: 'Nov 2025',
+};
+
+const CUSTOM_REPORTS = {
+  dateflow: {
+    title: 'DateFlow',
+    description: 'DateFlow is a document-to-calendar concept presented through an ENTI 317 slide deck.',
+    cardImage: 'assets/dateflow/dateflow-deck-page-01.png',
+    cardAlt: 'DateFlow slide deck cover page',
+    meta: [
+      { tag: 'h2', text: 'ENTI 317 Slide Deck' },
+      { tag: 'p', text: 'Apr 2026' },
+      { tag: 'p', text: 'Document-to-calendar platform concept' },
+    ],
+    paragraphs: [
+      'DateFlow was presented as a student-focused document-to-calendar platform for ENTI 317. The deck frames the problem, product concept, customer workflow, and business assumptions behind a tool designed to turn course materials into organized deadlines and calendar actions.',
+    ],
+    images: [
+      { src: 'assets/dateflow/dateflow-deck-page-01.png', alt: 'DateFlow slide deck page 1' },
+      { src: 'assets/dateflow/dateflow-deck-page-02.png', alt: 'DateFlow slide deck page 2' },
+      { src: 'assets/dateflow/dateflow-deck-page-03.png', alt: 'DateFlow slide deck page 3' },
+      { src: 'assets/dateflow/dateflow-deck-page-04.png', alt: 'DateFlow slide deck page 4' },
+      { src: 'assets/dateflow/dateflow-deck-page-05.png', alt: 'DateFlow slide deck page 5' },
+      { src: 'assets/dateflow/dateflow-deck-page-06.png', alt: 'DateFlow slide deck page 6' },
+      { src: 'assets/dateflow/dateflow-deck-page-07.png', alt: 'DateFlow slide deck page 7' },
+      { src: 'assets/dateflow/dateflow-deck-page-08.png', alt: 'DateFlow slide deck page 8' },
+      { src: 'assets/dateflow/dateflow-deck-page-09.png', alt: 'DateFlow slide deck page 9' },
+      { src: 'assets/dateflow/dateflow-deck-page-10.png', alt: 'DateFlow slide deck page 10' },
+      { src: 'assets/dateflow/dateflow-deck-page-11.png', alt: 'DateFlow slide deck page 11' },
+      { src: 'assets/dateflow/dateflow-deck-page-12.png', alt: 'DateFlow slide deck page 12' },
+      { src: 'assets/dateflow/dateflow-deck-page-13.png', alt: 'DateFlow slide deck page 13' },
+      { src: 'assets/dateflow/dateflow-deck-page-14.png', alt: 'DateFlow slide deck page 14' },
+      { src: 'assets/dateflow/dateflow-deck-page-15.png', alt: 'DateFlow slide deck page 15' },
+      { src: 'assets/dateflow/dateflow-deck-page-16.png', alt: 'DateFlow slide deck page 16' },
+    ],
+    download: {
+      localPath: 'assets/docs/dateflow-assignment-4-slide-deck.pdf',
+      label: 'Download PDF',
+      output: 'PDF deck',
+    },
+  },
+};
 
 const PROFILE_TIMELINE = [
   {
@@ -690,8 +765,8 @@ function profileList(items) {
 
 function profileDetailsSection(prefix) {
   return `
-      <section class="cream-band profile-details">
-        <div class="wrap">
+      <section class="experience-band">
+        <div class="wrap profile-block profile-block-charcoal">
           <div class="profile-intro">
             <h2>Experience & Progression</h2>
             <p>A concise view of the operating, valuation, and leadership experience behind the research work on this site.</p>
@@ -699,6 +774,10 @@ function profileDetailsSection(prefix) {
           <div class="progression-shell">
             ${profileTimeline(prefix)}
           </div>
+        </div>
+      </section>
+      <section class="profile-details">
+        <div class="wrap profile-block profile-block-cream">
           <div class="profile-grid">
             <section class="profile-panel profile-panel-wide">
               <h2>Education</h2>
@@ -749,8 +828,8 @@ function renderAbout(prefix = '../') {
           <hr>
         </div>
       </section>
-      <section class="cream-band">
-        <div class="wrap about-layout">
+      <section class="about-intro-section">
+        <div class="wrap about-layout about-block">
           ${image ? `<img class="about-photo" src="${localAsset(image.src, prefix)}" alt="Ivan Imshenetskyy" loading="eager">` : ''}
           <div class="about-copy">
             <div class="about-kicker">
@@ -780,6 +859,22 @@ function isFooterBlock(block) {
 }
 
 function reportData(slug) {
+  const custom = CUSTOM_REPORTS[slug];
+  if (custom) {
+    return {
+      page: {
+        title: custom.title,
+        metaDescription: custom.description,
+      },
+      title: custom.title,
+      meta: custom.meta,
+      paragraphs: custom.paragraphs,
+      images: custom.images,
+      pdf: null,
+      download: custom.download,
+    };
+  }
+
   const page = pageForSlug(slug);
   const blocks = (page.blocks || []).filter((block) => !isFooterBlock(block));
   const title = blocks.find((block) => block.tag === 'h1')?.text || page.headings?.[0]?.text || slug;
@@ -806,6 +901,11 @@ function reportData(slug) {
     paragraphs,
     images: uniqueImages(page),
     pdf: pdfAsset,
+    download: pdfAsset ? {
+      localPath: pdfAsset.localPath,
+      label: 'Download PDF',
+      output: 'PDF available',
+    } : null,
   };
 }
 
@@ -852,7 +952,8 @@ function categoryForSlug(slug) {
   return group?.title || 'Selected research';
 }
 
-function reportDate(data) {
+function reportDate(data, slug) {
+  if (REPORT_DATE_OVERRIDES[slug]) return REPORT_DATE_OVERRIDES[slug];
   return data.meta.find((block) => /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b.*\b20\d{2}\b|\b20\d{2}\b/i.test(block.text))?.text || 'Portfolio work';
 }
 
@@ -861,12 +962,36 @@ function reportContext(data, slug) {
     || categoryForSlug(slug);
 }
 
+function categoryLabel(category) {
+  return {
+    icbc: 'I.C.B.C',
+    equity: 'Equity Research',
+    school: 'School',
+  }[category] || category;
+}
+
+function reportCardDescription(slug, title, data) {
+  const custom = CUSTOM_REPORTS[slug];
+  if (custom?.description) return custom.description;
+
+  const featured = FEATURED_REPORTS.find((report) => report.slug === slug);
+  if (featured?.description) return featured.description;
+
+  const firstParagraph = data.paragraphs.find((paragraph) => paragraph.length > 80);
+  if (firstParagraph) {
+    const sentence = sentenceParts(firstParagraph)[0]?.trim() || firstParagraph;
+    return sentence.length > 190 ? `${sentence.slice(0, 187).trim()}...` : sentence;
+  }
+
+  return `${title} presented as part of Ivan Imshenetskyy's selected research, case competition, and academic work.`;
+}
+
 function renderReportSnapshot(data, slug) {
   const facts = [
     ['Context', reportContext(data, slug)],
-    ['Date', reportDate(data)],
+    ['Date', reportDate(data, slug)],
     ['Gallery', `${data.images.length} visual${data.images.length === 1 ? '' : 's'}`],
-    ['Output', data.pdf ? 'PDF available' : 'Case deck'],
+    ['Output', data.download?.output || 'Case deck'],
   ];
 
   return `
@@ -886,7 +1011,7 @@ function renderReport(slug, prefix = '../') {
     const italic = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|20\d{2}|Time Constraint|Constraints)\b/i.test(block.text);
     return `<div class="${small ? 'small' : ''} ${italic ? 'italic' : ''}">${escapeHtml(block.text)}</div>`;
   }).join('');
-  const pdfButton = data.pdf ? `<a class="button" href="${prefix}${data.pdf.localPath}">Download PDF</a>` : '';
+  const downloadButton = data.download ? `<a class="button" href="${prefix}${data.download.localPath}">${escapeHtml(data.download.label)}</a>` : '';
   const slides = data.images.map((image) => `
     <figure class="slide-card">
       <img src="${localAsset(image.src, prefix)}" alt="${escapeHtml(image.alt || data.title)}" loading="lazy">
@@ -904,23 +1029,23 @@ function renderReport(slug, prefix = '../') {
 
   const body = `
     <main>
-      <section class="dark-band report-hero report-hero-modern">
-        <div class="wrap report-hero-grid">
+      <section class="report-hero report-hero-modern">
+        <div class="wrap report-hero-grid report-detail-block">
           <div class="report-title-panel">
-            <a class="report-back-link" href="${homeHref(prefix)}">Back to home <span>→</span></a>
+            <a class="report-back-link" href="${homeHref(prefix)}">Back to home <span>&rarr;</span></a>
             <h1>${escapeHtml(data.title)}</h1>
           </div>
           <aside class="report-context-panel">
             ${meta ? `<div class="report-meta">${meta}</div>` : ''}
-            ${pdfButton ? `<div class="button-row">${pdfButton}</div>` : ''}
+            ${downloadButton ? `<div class="button-row">${downloadButton}</div>` : ''}
           </aside>
           ${renderReportSnapshot(data, slug)}
           ${insight}
           ${data.paragraphs.length ? `<div class="report-copy">${reportCopyHtml}</div>` : ''}
         </div>
       </section>
-      <section class="cream-band slide-gallery">
-        <div class="wrap">
+      <section class="slide-gallery">
+        <div class="wrap slide-gallery-block">
           <div class="gallery-heading">
             <h2>Report Gallery</h2>
             <p>${data.images.length} visual${data.images.length === 1 ? '' : 's'} from the underlying deck and analysis.</p>
@@ -961,7 +1086,7 @@ function main() {
   ])];
 
   for (const slug of slugs) {
-    if (!pageForSlug(slug)) {
+    if (!pageForSlug(slug) && !CUSTOM_REPORTS[slug]) {
       console.warn(`Missing page for ${slug}`);
       continue;
     }
