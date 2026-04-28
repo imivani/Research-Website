@@ -380,7 +380,14 @@
     const text = toggle.querySelector('.theme-toggle-text');
 
     const currentTheme = () => document.documentElement.dataset.theme || 'light';
-    const setTheme = (theme) => {
+    const setTheme = (theme, animate = false) => {
+      if (animate && !reducedMotion) {
+        document.documentElement.classList.add('theme-transition');
+        window.clearTimeout(setTheme.transitionTimer);
+        setTheme.transitionTimer = window.setTimeout(() => {
+          document.documentElement.classList.remove('theme-transition');
+        }, 680);
+      }
       document.documentElement.dataset.theme = theme;
       toggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
       if (text) text.textContent = theme === 'dark' ? 'Light' : 'Dark';
@@ -391,7 +398,7 @@
 
     setTheme(currentTheme());
     toggle.addEventListener('click', () => {
-      setTheme(currentTheme() === 'dark' ? 'light' : 'dark');
+      setTheme(currentTheme() === 'dark' ? 'light' : 'dark', true);
     });
   }
 
