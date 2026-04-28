@@ -696,6 +696,13 @@ html[data-theme="dark"] .button {
 
   .report-tools .report-filters button {
     color: var(--jpm-ink);
+    transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+  }
+
+  .report-tools .report-filters button:hover,
+  .report-tools .report-filters button:focus-visible,
+  .report-tools .report-filters button.is-active {
+    color: #ffffff;
   }
 }
 
