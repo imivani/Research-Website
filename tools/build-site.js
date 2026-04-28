@@ -302,7 +302,7 @@ function footer() {
     </footer>`;
 }
 
-function shell({ title, description, prefix, currentSlug, body }) {
+function shell({ title, description, prefix, currentSlug, body, bodyAttrs = '' }) {
   const googleTag = `<script async src="https://www.googletagmanager.com/gtag/js?id=G-8ZYVR9G2FD"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -339,7 +339,7 @@ function shell({ title, description, prefix, currentSlug, body }) {
   <link rel="stylesheet" href="${prefix}styles-jpmorgan-overrides.css">
   <script src="${prefix}script.js" defer></script>
 </head>
-<body class="jpm-theme">
+<body class="jpm-theme"${bodyAttrs ? ` ${bodyAttrs}` : ''}>
 ${header(prefix, currentSlug)}
 ${body}
 ${footer()}
@@ -795,12 +795,6 @@ function profileDetailsSection(prefix) {
               <h2>Certifications</h2>
               ${profileCertifications(prefix)}
             </section>
-            <section class="profile-panel">
-              <h2>Core Skills</h2>
-              <div class="skill-cloud">
-                ${PROFILE_SKILLS.map((skill) => `<span>${escapeHtml(skill)}</span>`).join('')}
-              </div>
-            </section>
           </div>
           <div class="button-row profile-actions">
             <a class="button" href="${homeHref(prefix)}">Back to Home</a>
@@ -1065,6 +1059,7 @@ function renderReport(slug, prefix = '../') {
     description: data.page.metaDescription,
     prefix,
     currentSlug: slug,
+    bodyAttrs: `data-report-slug="${escapeHtml(slug)}"`,
     body,
   });
 }

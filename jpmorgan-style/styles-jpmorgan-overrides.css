@@ -562,6 +562,35 @@ html[data-theme="dark"] .featured-report-action {
   color: var(--jpm-brown);
 }
 
+.featured-carousel-copy,
+.featured-carousel-media,
+.featured-reports,
+.report-block,
+.about-block,
+.profile-block,
+.report-detail-block,
+.slide-gallery-block,
+.report-feature-list .report-card-media::before,
+.jpm-theme .report-feature-list .report-card-media::before {
+  transition: background-color 680ms cubic-bezier(0.22, 1, 0.36, 1), color 680ms cubic-bezier(0.22, 1, 0.36, 1), border-color 680ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html.theme-transition body,
+html.theme-transition .site-header,
+html.theme-transition .mobile-panel,
+html.theme-transition .featured-carousel-copy,
+html.theme-transition .featured-carousel-media,
+html.theme-transition .featured-reports,
+html.theme-transition .report-block,
+html.theme-transition .about-block,
+html.theme-transition .profile-block,
+html.theme-transition .report-detail-block,
+html.theme-transition .slide-gallery-block,
+html.theme-transition .report-feature-list .report-card-media::before {
+  transition-duration: 680ms !important;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
 .report-card[data-featured="true"]::after {
   color: var(--jpm-brown);
   font-family: var(--sans);
@@ -810,7 +839,12 @@ html[data-theme="dark"] .report-card-kicker {
 }
 
 .progression-item {
-  transition: background 260ms ease, padding-left 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  transition: background-color 520ms cubic-bezier(0.22, 1, 0.36, 1), transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.progression-item.reveal.is-visible {
+  transition: opacity 700ms ease var(--reveal-delay, 0ms), background-color 520ms cubic-bezier(0.22, 1, 0.36, 1), transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .progression-logo {
@@ -827,9 +861,10 @@ html[data-theme="dark"] .report-card-kicker {
   background: var(--jpm-white);
 }
 
-.progression-item:hover {
+.progression-item:hover,
+.progression-item:focus-within {
   background: rgba(143, 90, 57, 0.055);
-  padding-left: 18px;
+  transform: translateX(12px);
 }
 
 .progression-content > span {
@@ -865,7 +900,8 @@ html[data-theme="dark"] .progression-content > span {
   color: #d6c9be;
 }
 
-html[data-theme="dark"] .progression-item:hover {
+html[data-theme="dark"] .progression-item:hover,
+html[data-theme="dark"] .progression-item:focus-within {
   background: rgba(185, 130, 92, 0.1);
 }
 
@@ -1180,10 +1216,7 @@ html[data-theme="dark"] .button {
 }
 
 body[data-report-slug] main::before {
-  content: "";
-  display: block;
-  height: 18px;
-  background: var(--report-accent, var(--jpm-brown));
+  content: none;
 }
 
 body[data-report-slug="altagas"] { --report-accent: #1a5276; }
@@ -1192,6 +1225,7 @@ body[data-report-slug="ashfield-industries-dungaven-acquisition"] { --report-acc
 body[data-report-slug="btma-og-data-to-drive-commercial-decisions"] { --report-accent: #4a2566; }
 body[data-report-slug="cataraqui-building-supplies"] { --report-accent: #8b572a; }
 body[data-report-slug="diamond"] { --report-accent: #5b8aa0; }
+body[data-report-slug="dateflow"] { --report-accent: #2a7fb8; }
 body[data-report-slug="galaxyresources"] { --report-accent: #2b3961; }
 body[data-report-slug="griffiths-energy-international"] { --report-accent: #b25b1e; }
 body[data-report-slug="hydroone"] { --report-accent: #0b2a5b; }
@@ -1368,7 +1402,7 @@ body[data-report-slug="xeqt"] { --report-accent: #1f5fa3; }
   left: 0;
   width: 1.375%;
   height: 80%;
-  background: var(--jpm-paper);
+  background-color: var(--jpm-paper);
   z-index: 2;
 }
 
@@ -1466,7 +1500,7 @@ body[data-report-slug="xeqt"] { --report-accent: #1f5fa3; }
 
 .report-block-charcoal .report-feature-list .report-card-media::before,
 .charcoal-band .report-feature-list .report-card-media::before {
-  background: #1d1d1c;
+  background-color: #1d1d1c;
 }
 
 .report-block-charcoal .report-feature-list .report-card-title,
@@ -1600,6 +1634,7 @@ body[data-report-slug="xeqt"] { --report-accent: #1f5fa3; }
 
 .jpm-theme .report-detail-block.report-hero-grid {
   max-width: none;
+  border-top: 12px solid var(--report-accent, var(--jpm-brown));
   padding: var(--jpm-block-y) var(--jpm-block-x);
 }
 
@@ -1653,7 +1688,7 @@ body[data-report-slug="xeqt"] { --report-accent: #1f5fa3; }
   left: 0;
   width: 1.375%;
   height: 80%;
-  background: var(--block-bg, var(--jpm-paper));
+  background-color: var(--block-bg, var(--jpm-paper));
   z-index: 4;
 }
 
@@ -1722,6 +1757,33 @@ body[data-report-slug="xeqt"] { --report-accent: #1f5fa3; }
 
   .jpm-theme .report-snapshot-item:first-child {
     padding-left: 0;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 900px) {
+  .featured-carousel-track {
+    min-height: calc(var(--featured-image-height) + 500px);
+  }
+
+  .featured-carousel-controls {
+    top: auto;
+    bottom: 36px;
+    left: var(--featured-panel-left);
+  }
+}
+
+@media (max-width: 720px) {
+  .featured-carousel {
+    --featured-panel-top: calc(var(--featured-image-height) - clamp(48px, 15vw, 60px));
+  }
+
+  .featured-carousel-track {
+    min-height: calc(var(--featured-image-height) + 500px);
+  }
+
+  .featured-carousel-controls {
+    top: auto;
+    bottom: 24px;
   }
 }
 
