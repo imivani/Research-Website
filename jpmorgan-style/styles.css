@@ -29,6 +29,10 @@ body {
   font-size: 18px;
   line-height: 1.45;
   overflow-x: hidden;
+}
+
+body > main,
+body > .footer {
   animation: page-in 520ms ease both;
 }
 

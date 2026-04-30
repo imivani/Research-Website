@@ -103,8 +103,8 @@ const HOME_GROUPS = [
   {
     key: 'school',
     category: 'school',
-    title: 'School Reports',
-    subtitle: 'Assignments & extracurriculars at Haskayne.',
+    title: 'Academic & Case Reports',
+    subtitle: 'Selected academic projects, case work, and applied finance analysis from Haskayne.',
     grid: 'grid-two',
     items: [
       ['dateflow', 'DateFlow Document-to-Calendar Concept', ''],
@@ -210,7 +210,7 @@ function header(prefix, currentSlug) {
       <a class="${currentSlug === 'about' ? 'active' : ''}" href="${pageHref(prefix, 'about')}">About Me</a>
       ${navDetails('I.C.B.C Reports', ICBC_MENU, prefix, currentSlug, icbcActive)}
       ${navDetails('Equity Research & Economic Reports', EQUITY_MENU, prefix, currentSlug, equityActive)}
-      ${navDetails('School Reports', SCHOOL_MENU, prefix, currentSlug, schoolActive)}
+      ${navDetails('Academic & Case Reports', SCHOOL_MENU, prefix, currentSlug, schoolActive)}
       <span class="socials">
         <a class="linkedin-icon" href="${LINKEDIN}" aria-label="LinkedIn">in</a>
         <a class="mail-icon" href="mailto:${EMAIL}" aria-label="Email">&#9993;</a>
@@ -243,7 +243,7 @@ function header(prefix, currentSlug) {
         <a class="${currentSlug === 'about' ? 'active' : ''}" href="${pageHref(prefix, 'about')}">About Me</a>
         ${navDetails('I.C.B.C Reports', ICBC_MENU, prefix, currentSlug, icbcActive)}
         ${navDetails('Equity Research & Economic Reports', EQUITY_MENU, prefix, currentSlug, equityActive)}
-        ${navDetails('School Reports', SCHOOL_MENU, prefix, currentSlug, schoolActive)}
+        ${navDetails('Academic & Case Reports', SCHOOL_MENU, prefix, currentSlug, schoolActive)}
         <span class="socials">
           <a class="linkedin-icon" href="${LINKEDIN}" aria-label="LinkedIn">in</a>
           <a class="mail-icon" href="mailto:${EMAIL}" aria-label="Email">&#9993;</a>
@@ -361,10 +361,10 @@ function renderCard(item, image, prefix, group, index) {
   const output = data.download?.output || `${data.images.length} visual${data.images.length === 1 ? '' : 's'}`;
   const searchable = `${title} ${category} ${date} ${output} ${description}`;
   return `
-    <a class="report-card ${extraClass}" href="${pageHref(prefix, slug)}" data-report-card data-title="${escapeHtml(title)}" data-search="${escapeHtml(searchable)}" data-category="${escapeHtml(group.category)}" data-featured="${featured}" data-index="${index}">
+    <a class="report-card ${extraClass}" href="${pageHref(prefix, slug)}" data-report-card data-slug="${escapeHtml(slug)}" data-title="${escapeHtml(title)}" data-search="${escapeHtml(searchable)}" data-category="${escapeHtml(group.category)}" data-featured="${featured}" data-index="${index}">
       <span class="report-card-number">${String(index + 1).padStart(2, '0')}</span>
       <span class="report-card-media">
-        ${src ? `<span class="report-card-image-wrap"><img src="${src}" alt="${escapeHtml(alt)}" loading="lazy"><span class="report-card-hover" aria-hidden="true"><span>View report</span><span class="report-card-hover-arrow">&rarr;</span></span></span>` : ''}
+        ${src ? `<span class="report-card-image-wrap"><img src="${src}" alt="${escapeHtml(alt)}" loading="lazy"></span>` : ''}
       </span>
       <span class="report-card-body">
         <span class="report-card-kicker">
@@ -388,7 +388,7 @@ function reportControls() {
           <button type="button" class="is-active" data-report-filter="all" aria-pressed="true">All</button>
           <button type="button" data-report-filter="icbc" aria-pressed="false">I.C.B.C</button>
           <button type="button" data-report-filter="equity" aria-pressed="false">Equity</button>
-          <button type="button" data-report-filter="school" aria-pressed="false">School</button>
+          <button type="button" data-report-filter="school" aria-pressed="false">Academic</button>
         </div>
       </div>
       <label class="report-search">
@@ -450,6 +450,23 @@ function renderFeaturedShowcase(prefix = '') {
     </section>`;
 }
 
+function renderFeaturedIntro(prefix = '') {
+  return `
+    <section class="featured-intro">
+      <div class="wrap featured-intro-block">
+        <div class="featured-intro-copy">
+          <h1>Featured Reports</h1>
+          <p>Selected finance, energy valuation, capital markets, and academic case work.</p>
+        </div>
+        <nav class="featured-intro-actions" aria-label="Featured report actions">
+          <a href="#all-reports">View Research <span>&rarr;</span></a>
+          <a href="${pageHref(prefix, 'about')}">View Experience <span>&rarr;</span></a>
+          <a href="mailto:${EMAIL}">Contact <span>&rarr;</span></a>
+        </nav>
+      </div>
+    </section>`;
+}
+
 function renderHome(prefix = '') {
   const page = homePage();
   const images = uniqueImages(page);
@@ -457,7 +474,7 @@ function renderHome(prefix = '') {
   let cardIndex = 0;
   const libraryIntro = `
     <section class="dark-band home-hero">
-      <div class="wrap">
+      <div class="wrap" id="all-reports">
         <h1>All Reports</h1>
         <hr>
         ${reportControls()}
@@ -486,18 +503,18 @@ function renderHome(prefix = '') {
 
   return shell({
     title: 'Ivan I.',
-    description: page.metaDescription || 'A collection of my research & economic reports.',
+    description: 'Selected finance, energy valuation, capital markets, transaction analysis, and academic case work by Ivan Imshenetskyy.',
     prefix,
     currentSlug: 'home',
-    body: `<main>${renderFeaturedShowcase(prefix)}${libraryIntro}${groups}<div class="report-empty" data-report-empty hidden>No reports match the current search.</div></main>`,
+    body: `<main>${renderFeaturedIntro(prefix)}${renderFeaturedShowcase(prefix)}${libraryIntro}${groups}<div class="report-empty" data-report-empty hidden>No reports match the current search.</div></main>`,
   });
 }
 
 const PROFILE_STATS = [
-  { value: '7+', label: 'years client-facing business experience' },
-  { value: '2+', label: 'years energy-focused valuation experience' },
+  { value: '7+', label: 'years of client-facing business experience' },
+  { value: '2+', label: 'years of energy-focused valuation experience' },
   { value: '200+', label: 'client projects delivered through FluxFrame' },
-  { value: '120K+', label: 'subscribers built through digital media' },
+  { value: '120K+', label: 'subscribers across digital media channels' },
 ];
 
 const FEATURED_REPORTS = [
@@ -567,6 +584,14 @@ const REPORT_DATE_OVERRIDES = {
   hydroone: 'Nov 2025',
 };
 
+const REPORT_PARAGRAPH_OVERRIDES = {
+  'btma-og-data-to-drive-commercial-decisions': [
+    'An analysis of governance failure, capital structure pressure, and leadership accountability. The project followed data from upstream planning through midstream market analytics and downstream commercial execution to understand where business decisions break across the energy value chain.',
+    'Through interviews with professionals across Cenovus and Plains Midstream, the analysis traced how assumptions are created, transformed, and ultimately exposed to financial consequences. The findings showed that upstream feels data failures first, midstream trades speed over perfection, and downstream absorbs every error in P&L.',
+    'The conclusion was direct: digital transformation in energy is not only a technical challenge. It is a change management problem where alignment, trust, and ownership matter more than dashboards or systems.',
+  ],
+};
+
 const CUSTOM_REPORTS = {
   dateflow: {
     title: 'DateFlow',
@@ -622,7 +647,7 @@ const PROFILE_TIMELINE = [
     org: 'Manchester Properties Inc.',
     logo: 'assets/profile-logos/manchester-properties.jpeg',
     initials: 'MPI',
-    detail: 'Supported commercial real estate finance work across a portfolio with approximately $50M in assets under administration.',
+    detail: 'Supported financial analysis, lease tracking, and valuation work across a commercial real estate portfolio with approximately $50M in assets under administration.',
   },
   {
     period: 'Sep 2024 - Aug 2025',
@@ -649,12 +674,12 @@ const PROFILE_TIMELINE = [
     detail: 'Teaching assistant for MBA Acquisitions in Entrepreneurship.',
   },
   {
-    period: 'Apr 2026 - Present',
-    role: 'Summer Analyst, Global Transaction Banking',
+    period: 'Starting May 2026',
+    role: 'Incoming Summer Analyst, Global Transaction Banking',
     org: 'CIBC Capital Markets',
     logo: 'assets/profile-logos/cibc-capital-markets.jpeg',
     initials: 'C',
-    detail: 'Started as a Global Transaction Banking Summer Analyst at CIBC Capital Markets.',
+    detail: 'Incoming summer analyst role focused on global transaction banking at CIBC Capital Markets.',
   },
 ];
 
@@ -663,54 +688,79 @@ const PROFILE_EDUCATION = [
     title: 'Haskayne School of Business',
     meta: 'Bachelor of Commerce, Finance - 2027',
     logo: 'assets/profile-logos/haskayne.jpeg',
-    items: ['Finance concentration at the University of Calgary.'],
+    detail: 'Finance concentration at the University of Calgary.',
   },
   {
     title: 'Henry Wise Wood High School',
     meta: '2017 - 2021',
     logo: 'assets/profile-logos/henry-wise-wood.jpeg',
-    items: ['Graduated with 95% overall.'],
+    detail: 'Graduated with 95% overall.',
   },
 ];
 
 const PROFILE_AWARDS = [
-  '1st Place at CIRI Capital Power Buy-Side Target Case Competition',
-  '1st Place at TD Securities Investment Banking Case Competition',
-  'Top 3 Finalist, Finance Stream, Inter-Collegiate Business Competition 2026',
-  'Local Finalist, CFA Research Challenge',
-  'RBC Fast Pitch Semifinalist, 2025',
+  {
+    title: '1st Place at CIRI Capital Power Buy-Side Target Case Competition',
+    meta: 'Investor relations case competition',
+  },
+  {
+    title: '1st Place at TD Securities Investment Banking Case Competition',
+    meta: 'Transaction analysis and pitch execution',
+  },
+  {
+    title: 'Top 3 Finalist, Finance Stream, Inter-Collegiate Business Competition 2026',
+    meta: 'National undergraduate case competition',
+  },
+  {
+    title: 'Local Finalist, CFA Research Challenge',
+    meta: 'Equity research and valuation',
+  },
+  {
+    title: 'RBC Fast Pitch Semifinalist, 2025',
+    meta: 'Venture pitch competition',
+  },
 ];
 
 const PROFILE_LEADERSHIP = [
-  'Vice President, Equity Research - Haskayne Finance Club',
-  'COO - DeNovo Student Investment Fund',
-  'Portfolio Manager, Energy - DeNovo Student Investment Fund',
-  'Equity Research Analyst - Haskayne Finance Club',
-  'VP Finance - Tech Start UCalgary',
-  'Student Ambassador - Cenovus Energy',
+  {
+    title: 'Vice President, Equity Research',
+    meta: 'Haskayne Finance Club',
+  },
+  {
+    title: 'COO',
+    meta: 'DeNovo Student Investment Fund',
+  },
+  {
+    title: 'Portfolio Manager, Energy',
+    meta: 'DeNovo Student Investment Fund',
+  },
+  {
+    title: 'Equity Research Analyst',
+    meta: 'Haskayne Finance Club',
+  },
+  {
+    title: 'VP Finance',
+    meta: 'Tech Start UCalgary',
+  },
+  {
+    title: 'Student Ambassador',
+    meta: 'Cenovus Energy',
+  },
 ];
 
 const PROFILE_CERTIFICATIONS = [
   {
     title: 'Corporate Valuation for M&A and Capital Markets',
     issuer: 'Training The Street',
+    meta: 'Issued Oct 2024',
     logo: 'assets/profile-logos/training-the-street.jpeg',
   },
   {
     title: 'Financial Modeling Certification',
     issuer: 'Financial Modeling Institute',
+    meta: 'Issued Feb 2024',
     logo: 'assets/profile-logos/fmi.jpeg',
   },
-];
-
-const PROFILE_SKILLS = [
-  'Financial Modeling',
-  'Microsoft Excel',
-  'Quantitative Analytics',
-  'Finance',
-  'Oil and Gas',
-  'Equity Research',
-  'Corporate Research',
 ];
 
 function profileStats() {
@@ -741,26 +791,54 @@ function profileTimeline(prefix) {
 }
 
 function profileEducation(prefix) {
-  return PROFILE_EDUCATION.map((item) => `
-    <article class="profile-list-block">
-      <h3><span class="profile-mini-logo"><img src="${prefix}${escapeHtml(item.logo)}" alt="" loading="lazy"></span>${escapeHtml(item.title)}</h3>
-      <p>${escapeHtml(item.meta)}</p>
-      <ul>
-        ${item.items.map((entry) => `<li>${escapeHtml(entry)}</li>`).join('')}
-      </ul>
+  return PROFILE_EDUCATION.map((item, index) => `
+    <article class="profile-credential-row">
+      <span class="profile-mini-logo"><img src="${prefix}${escapeHtml(item.logo)}" alt="" loading="lazy"></span>
+      <div class="profile-credential-copy">
+        <span class="profile-row-label">${String(index + 1).padStart(2, '0')} / School</span>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.meta)}</p>
+        <p class="profile-row-detail">${escapeHtml(item.detail)}</p>
+      </div>
     </article>`).join('');
 }
 
 function profileCertifications(prefix) {
-  return PROFILE_CERTIFICATIONS.map((item) => `
-    <article class="profile-list-block">
-      <h3><span class="profile-mini-logo"><img src="${prefix}${escapeHtml(item.logo)}" alt="" loading="lazy"></span>${escapeHtml(item.title)}</h3>
-      <p>${escapeHtml(item.issuer)}</p>
+  return PROFILE_CERTIFICATIONS.map((item, index) => `
+    <article class="profile-credential-row">
+      <span class="profile-mini-logo"><img src="${prefix}${escapeHtml(item.logo)}" alt="" loading="lazy"></span>
+      <div class="profile-credential-copy">
+        <span class="profile-row-label">${String(index + 1).padStart(2, '0')} / Certification</span>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.issuer)}</p>
+        <p class="profile-row-detail">${escapeHtml(item.meta)}</p>
+      </div>
     </article>`).join('');
 }
 
-function profileList(items) {
-  return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+function profileIndexedList(items, label) {
+  return `<div class="profile-index-list">${items.map((item, index) => `
+    <article class="profile-index-row">
+      <span class="profile-index-number">${String(index + 1).padStart(2, '0')}</span>
+      <div class="profile-index-copy">
+        <span class="profile-row-label">${escapeHtml(label)}</span>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.meta)}</p>
+      </div>
+    </article>`).join('')}</div>`;
+}
+
+function profilePanel(number, title, content, className = '') {
+  return `
+            <section class="profile-panel ${className}">
+              <header class="profile-panel-heading">
+                <span>${escapeHtml(number)}</span>
+                <h2>${escapeHtml(title)}</h2>
+              </header>
+              <div class="profile-panel-body">
+                ${content}
+              </div>
+            </section>`;
 }
 
 function profileDetailsSection(prefix) {
@@ -769,7 +847,7 @@ function profileDetailsSection(prefix) {
         <div class="wrap profile-block profile-block-charcoal">
           <div class="profile-intro">
             <h2>Experience & Progression</h2>
-            <p>A concise view of the operating, valuation, and leadership experience behind the research work on this site.</p>
+            <p>A progression from entrepreneurial execution to energy finance, capital markets, and investment research.</p>
           </div>
           <div class="progression-shell">
             ${profileTimeline(prefix)}
@@ -778,23 +856,11 @@ function profileDetailsSection(prefix) {
       </section>
       <section class="profile-details">
         <div class="wrap profile-block profile-block-cream">
-          <div class="profile-grid">
-            <section class="profile-panel profile-panel-wide">
-              <h2>Education</h2>
-              ${profileEducation(prefix)}
-            </section>
-            <section class="profile-panel">
-              <h2>Awards</h2>
-              ${profileList(PROFILE_AWARDS)}
-            </section>
-            <section class="profile-panel">
-              <h2>Leadership</h2>
-              ${profileList(PROFILE_LEADERSHIP)}
-            </section>
-            <section class="profile-panel">
-              <h2>Certifications</h2>
-              ${profileCertifications(prefix)}
-            </section>
+          <div class="profile-grid profile-credential-grid">
+            ${profilePanel('01', 'Education', profileEducation(prefix), 'profile-panel-wide profile-panel-education')}
+            ${profilePanel('02', 'Awards', profileIndexedList(PROFILE_AWARDS, 'Recognition'), 'profile-panel-awards')}
+            ${profilePanel('03', 'Leadership', profileIndexedList(PROFILE_LEADERSHIP, 'Role'), 'profile-panel-leadership')}
+            ${profilePanel('04', 'Certifications', profileCertifications(prefix), 'profile-panel-certifications')}
           </div>
           <div class="button-row profile-actions">
             <a class="button" href="${homeHref(prefix)}">Back to Home</a>
@@ -810,8 +876,8 @@ function renderAbout(prefix = '../') {
   const h1 = blocks.find((block) => block.tag === 'h1')?.text || 'About Me';
   const intro = blocks.filter((block) => block.tag === 'p' && block.text.length < 80).slice(0, 3);
   const paragraphs = [
-    'I started building graphics and digital products in my early teens, eventually founding FluxFrame, where I managed 200+ client projects, grew a YouTube channel to 120,000+ subscribers, and learned how execution, accountability, and cash flow shape real businesses.',
-    'My pivot into finance came through the TD Securities M&A Challenge, where transaction analysis showed me I was most engaged in valuation, assumptions, and decision-making under uncertainty. Since then, I have focused on valuation, strategy, and capital allocation, particularly in energy and oil and gas, through NAV models, LBO and liquidation cases, ICBC, Cenovus Energy, and leadership roles in student investment funds.',
+    'I am a fourth-year finance student at the University of Calgary with experience across capital markets, energy valuation, commercial decision analysis, and student investment leadership. My background combines entrepreneurial execution through FluxFrame with finance experience spanning transaction analysis, NAV modeling, downstream commercial reporting, and case competition work.',
+    'I started building graphics and digital products in my early teens, eventually founding FluxFrame, where I managed 200+ client projects, grew a YouTube channel to 120,000+ subscribers, and learned how execution, accountability, and cash flow shape real businesses. My pivot into finance came through the TD Securities M&A Challenge, where transaction analysis showed me I was most engaged in valuation, assumptions, and decision-making under uncertainty.',
   ];
 
   const body = `
@@ -832,7 +898,7 @@ function renderAbout(prefix = '../') {
             <div class="about-proof-stats">
               ${profileStats()}
             </div>
-            ${paragraphs.map((text, index) => `<p>${index === 1 ? renderReportParagraph(text, { text: 'valuation, strategy, and capital allocation, particularly in energy and oil and gas' }) : escapeHtml(text)}</p>`).join('')}
+            ${paragraphs.map((text, index) => `<p>${index === 0 ? renderReportParagraph(text, { text: 'capital markets, energy valuation, commercial decision analysis, and student investment leadership' }) : escapeHtml(text)}</p>`).join('')}
           </div>
         </div>
       </section>
@@ -892,7 +958,7 @@ function reportData(slug) {
     page,
     title,
     meta,
-    paragraphs,
+    paragraphs: REPORT_PARAGRAPH_OVERRIDES[slug] || paragraphs,
     images: uniqueImages(page),
     pdf: pdfAsset,
     download: pdfAsset ? {
@@ -960,7 +1026,7 @@ function categoryLabel(category) {
   return {
     icbc: 'I.C.B.C',
     equity: 'Equity Research',
-    school: 'School',
+    school: 'Academic & Case',
   }[category] || category;
 }
 
