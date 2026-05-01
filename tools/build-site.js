@@ -34,6 +34,7 @@ const ICBC_MENU = [
 const EQUITY_MENU = [
   ['sde', 'Spartan Delta Research Report (HFC)'],
   ['altagas', 'AltaGas Research Report (CFA)'],
+  ['hydro-one-corporate-finance', 'Hydro One Corporate Finance Report'],
   ['xeqt', 'XEQT Report - Anna'],
   ['sanctions', 'Sanctions & Wedges - Russian Markets'],
   ['sdeonepager', 'Spartan Delta One Pager'],
@@ -69,6 +70,7 @@ const HOME_GROUPS = [
     items: [
       ['sde', 'Spartan Delta Research Report (HFC)', 'feature'],
       ['altagas', 'AltaGas Research Report (CFA)', 'feature'],
+      ['hydro-one-corporate-finance', 'Hydro One Corporate Finance Report', ''],
       ['sanctions', 'Sanctions, Friction & Wedges in Russia Crude Markets', ''],
       ['sdeonepager', 'Spartan Delta One Pager', ''],
       ['xeqt', 'ETF Selection for Anna', ''],
@@ -593,6 +595,44 @@ const REPORT_PARAGRAPH_OVERRIDES = {
 };
 
 const CUSTOM_REPORTS = {
+  'hydro-one-corporate-finance': {
+    title: 'Hydro One Corporate Finance Report',
+    description: 'A FNCE 451 corporate finance report assessing Hydro One Limited through stock price, cost of capital, capital structure, and payout policy analysis.',
+    cardImage: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-01.png',
+    cardAlt: 'Hydro One Limited semester project report cover page',
+    meta: [
+      { tag: 'h2', text: 'FNCE 451 Corporate Finance' },
+      { tag: 'p', text: 'Apr 2026' },
+      { tag: 'p', text: 'Team Members - Annik Aucoin, Brooke Negash, Ivan Imshenetskyy, Leila Pollock, Victoria Aborowa' },
+    ],
+    paragraphs: [
+      'This FNCE 451 semester project evaluated Hydro One Limited through the required corporate finance lenses of stock price assessment, cost of capital, capital structure, and payout policy. The assignment required a publicly traded Canadian non-financial firm with long-term debt, making Hydro One a strong fit because its value is driven by regulated rate base investment, allowed ROE, and capital allocation decisions.',
+      'The report concluded that Hydro One is a high-quality regulated utility, but that quality appeared fully priced. As of April 2026, Hydro One traded at premium peer multiples while a Gordon Growth Model implied an intrinsic value of approximately C$51.64 against a market price of C$58.94, supporting a fair-to-slightly-expensive assessment.',
+      'The analysis estimated a 5.48% cost of equity using CAPM, DDM, and BYPRP methods, a 3.61% after-tax cost of debt, and a current-market WACC of 4.82%. It also compared Hydro One’s market-value capital structure with the Ontario Energy Board deemed structure and assessed whether the dividend policy was sustainable for a capital-intensive regulated utility.',
+    ],
+    images: [
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-01.png', alt: 'Hydro One corporate finance report page 1' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-02.png', alt: 'Hydro One corporate finance report page 2' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-03.png', alt: 'Hydro One corporate finance report page 3' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-04.png', alt: 'Hydro One corporate finance report page 4' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-05.png', alt: 'Hydro One corporate finance report page 5' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-06.png', alt: 'Hydro One corporate finance report page 6' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-07.png', alt: 'Hydro One corporate finance report page 7' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-08.png', alt: 'Hydro One corporate finance report page 8' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-09.png', alt: 'Hydro One corporate finance report page 9' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-10.png', alt: 'Hydro One corporate finance report page 10' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-11.png', alt: 'Hydro One corporate finance report page 11' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-12.png', alt: 'Hydro One corporate finance report page 12' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-13.png', alt: 'Hydro One corporate finance report page 13' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-14.png', alt: 'Hydro One corporate finance report page 14' },
+      { src: 'assets/hydro-one-corporate-finance/hydro-one-corporate-finance-page-15.png', alt: 'Hydro One corporate finance report page 15' },
+    ],
+    download: {
+      localPath: 'assets/docs/hydro-one-semester-project-report.pdf',
+      label: 'Download PDF',
+      output: 'PDF report',
+    },
+  },
   dateflow: {
     title: 'DateFlow',
     description: 'DateFlow is a document-to-calendar concept presented through an ENTI 317 slide deck.',
@@ -1086,6 +1126,7 @@ function renderReport(slug, prefix = '../') {
     const paragraphPassage = passage?.paragraphIndex === index ? passage : null;
     return `<p>${renderReportParagraph(paragraph, paragraphPassage)}</p>`;
   }).join('');
+  const gallerySource = /report/i.test(data.download?.output || '') ? 'report' : 'deck';
 
   const body = `
     <main>
@@ -1108,7 +1149,7 @@ function renderReport(slug, prefix = '../') {
         <div class="wrap slide-gallery-block">
           <div class="gallery-heading">
             <h2>Report Gallery</h2>
-            <p>${data.images.length} visual${data.images.length === 1 ? '' : 's'} from the underlying deck and analysis.</p>
+            <p>${data.images.length} visual${data.images.length === 1 ? '' : 's'} from the underlying ${gallerySource} and analysis.</p>
           </div>
           <div class="slides">
             ${slides}
