@@ -76,6 +76,28 @@
     });
   }
 
+  function setupCachedPageReplay() {
+    if (reducedMotion) return;
+
+    window.addEventListener('pagehide', () => {
+      document.body.classList.add('page-cache-hold');
+    });
+
+    window.addEventListener('pageshow', (event) => {
+      document.body.classList.remove('page-exit');
+
+      if (!event.persisted && !document.body.classList.contains('page-cache-hold')) return;
+
+      document.body.classList.remove('page-cache-hold', 'page-enter-replay');
+      void document.body.offsetWidth;
+      document.body.classList.add('page-enter-replay');
+      window.clearTimeout(setupCachedPageReplay.replayTimer);
+      setupCachedPageReplay.replayTimer = window.setTimeout(() => {
+        document.body.classList.remove('page-enter-replay');
+      }, 720);
+    });
+  }
+
   function setupLightbox() {
     const slideImages = [...document.querySelectorAll('.slide-card img')];
     if (!slideImages.length) return;
@@ -579,6 +601,7 @@
     setupReportCardImageSizing();
     setupReportSearchToggle();
     setupPageTransitions();
+    setupCachedPageReplay();
     setupLightbox();
   });
 })();

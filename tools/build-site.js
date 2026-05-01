@@ -914,10 +914,13 @@ function renderAbout(prefix = '../') {
   const blocks = page.blocks || [];
   const image = uniqueImages(page)[0];
   const h1 = blocks.find((block) => block.tag === 'h1')?.text || 'About Me';
-  const intro = blocks.filter((block) => block.tag === 'p' && block.text.length < 80).slice(0, 3);
+  const intro = [
+    { text: 'Finance Student' },
+    { text: 'University of Calgary' },
+  ];
   const paragraphs = [
-    'I am a fourth-year finance student at the University of Calgary with experience across capital markets, energy valuation, commercial decision analysis, and student investment leadership. My background combines entrepreneurial execution through FluxFrame with finance experience spanning transaction analysis, NAV modeling, downstream commercial reporting, and case competition work.',
-    'I started building graphics and digital products in my early teens, eventually founding FluxFrame, where I managed 200+ client projects, grew a YouTube channel to 120,000+ subscribers, and learned how execution, accountability, and cash flow shape real businesses. My pivot into finance came through the TD Securities M&A Challenge, where transaction analysis showed me I was most engaged in valuation, assumptions, and decision-making under uncertainty.',
+    'I started making graphics in my early teens. What began as curiosity eventually became FluxFrame, a digital services firm I built while in school. Over several years, I managed client work, built products, grew a YouTube channel to more than 120,000 subscribers, and learned how real businesses operate under constraints.',
+    'My pivot into finance came through exposure, not abstraction. Competing in the TD Securities M&A Challenge showed me how much I enjoyed working through transactions under pressure, testing assumptions, and making decisions with incomplete information. This site is a record of that progression: from building things for clients to studying businesses, capital allocation, and the people behind the numbers.',
   ];
 
   const body = `
@@ -938,7 +941,7 @@ function renderAbout(prefix = '../') {
             <div class="about-proof-stats">
               ${profileStats()}
             </div>
-            ${paragraphs.map((text, index) => `<p>${index === 0 ? renderReportParagraph(text, { text: 'capital markets, energy valuation, commercial decision analysis, and student investment leadership' }) : escapeHtml(text)}</p>`).join('')}
+            ${paragraphs.map((text, index) => `<p>${index === 0 ? renderReportParagraph(text, { text: 'real businesses operate under constraints' }) : escapeHtml(text)}</p>`).join('')}
           </div>
         </div>
       </section>
