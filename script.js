@@ -1,6 +1,14 @@
 (function () {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Scroll to top on every fresh load (skip when URL has a hash or browser restored scroll).
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (!window.location.hash) {
+    window.scrollTo(0, 0);
+    document.addEventListener('DOMContentLoaded', () => window.scrollTo(0, 0), { once: true });
+    window.addEventListener('load', () => window.scrollTo(0, 0), { once: true });
+  }
+
   function markReady() {
     document.body.classList.add('page-ready');
   }
@@ -588,115 +596,16 @@
     });
   }
 
-  function setupSlideDeck() {
+  function setupSlideGallery() {
     const slidesContainer = document.querySelector('.slides');
     if (!slidesContainer) return;
-
-    const cards = [...slidesContainer.querySelectorAll('.slide-card img')];
+    const cards = [...slidesContainer.querySelectorAll('.slide-card')];
     if (cards.length === 0) return;
-
-    const deck = document.createElement('div');
-    deck.className = 'slide-deck';
-    deck.innerHTML = `
-      <div class="slide-stage-wrap">
-        <button class="slide-nav slide-nav-prev" type="button" aria-label="Previous slide">
-          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
-            <polyline points="15 4 7 12 15 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <figure class="slide-stage-figure">
-          <img class="slide-stage-image" src="" alt="" tabindex="0" role="button" aria-label="Open current slide larger">
-          <figcaption class="slide-stage-counter">
-            <span class="slide-stage-current">1</span><span class="slide-stage-divider">/</span><span class="slide-stage-total">${cards.length}</span>
-          </figcaption>
-        </figure>
-        <button class="slide-nav slide-nav-next" type="button" aria-label="Next slide">
-          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
-            <polyline points="9 4 17 12 9 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-      <div class="slide-thumbs" role="tablist" aria-label="All report slides">
-        ${cards.map((img, i) => `
-          <button type="button" class="slide-thumb${i === 0 ? ' is-active' : ''}" data-slide-index="${i}" role="tab" aria-selected="${i === 0 ? 'true' : 'false'}" aria-label="Show slide ${i + 1}">
-            <img src="${img.src.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}" alt="" loading="lazy">
-            <span class="slide-thumb-index">${String(i + 1).padStart(2, '0')}</span>
-          </button>
-        `).join('')}
-      </div>
-    `;
-
-    slidesContainer.parentNode.insertBefore(deck, slidesContainer);
-    slidesContainer.classList.add('slides-source');
-
-    const stageImage = deck.querySelector('.slide-stage-image');
-    const counterCurrent = deck.querySelector('.slide-stage-current');
-    const thumbs = [...deck.querySelectorAll('.slide-thumb')];
-    const prevBtn = deck.querySelector('.slide-nav-prev');
-    const nextBtn = deck.querySelector('.slide-nav-next');
-    let activeIndex = 0;
-
-    if (cards.length === 1) {
-      prevBtn.style.display = 'none';
-      nextBtn.style.display = 'none';
-      deck.querySelector('.slide-thumbs').style.display = 'none';
-    }
-
-    function showSlide(idx) {
-      activeIndex = ((idx % cards.length) + cards.length) % cards.length;
-      const source = cards[activeIndex];
-      stageImage.src = source.currentSrc || source.src;
-      stageImage.alt = source.alt || `Slide ${activeIndex + 1}`;
-      counterCurrent.textContent = activeIndex + 1;
-      thumbs.forEach((thumb, i) => {
-        const isActive = i === activeIndex;
-        thumb.classList.toggle('is-active', isActive);
-        thumb.setAttribute('aria-selected', isActive ? 'true' : 'false');
-      });
-      const activeThumb = thumbs[activeIndex];
-      if (activeThumb) {
-        activeThumb.scrollIntoView({ inline: 'center', block: 'nearest', behavior: reducedMotion ? 'auto' : 'smooth' });
-      }
-    }
-
-    thumbs.forEach((thumb) => {
-      thumb.addEventListener('click', () => {
-        const idx = Number(thumb.dataset.slideIndex);
-        showSlide(idx);
-      });
+    cards.forEach((card, i) => {
+      card.dataset.slideNumber = String(i + 1).padStart(2, '0');
+      card.classList.toggle('slide-card-feature', i === 0);
     });
-
-    prevBtn.addEventListener('click', () => showSlide(activeIndex - 1));
-    nextBtn.addEventListener('click', () => showSlide(activeIndex + 1));
-
-    function openLightboxForActive() {
-      const target = cards[activeIndex];
-      if (target && typeof target.click === 'function') target.click();
-    }
-
-    stageImage.addEventListener('click', openLightboxForActive);
-    stageImage.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        openLightboxForActive();
-      }
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (document.body.classList.contains('lightbox-open')) return;
-      if (document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
-      const rect = deck.getBoundingClientRect();
-      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-      if (event.key === 'ArrowLeft') {
-        event.preventDefault();
-        showSlide(activeIndex - 1);
-      } else if (event.key === 'ArrowRight') {
-        event.preventDefault();
-        showSlide(activeIndex + 1);
-      }
-    });
-
-    showSlide(0);
+    slidesContainer.classList.add('slides-grid');
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -713,7 +622,7 @@
     setupReportSearchToggle();
     setupPageTransitions();
     setupCachedPageReplay();
-    setupSlideDeck();
+    setupSlideGallery();
     setupLightbox();
   });
 })();
