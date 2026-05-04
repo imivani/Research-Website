@@ -1338,7 +1338,8 @@ html[data-theme="dark"] .progression-logo {
 }
 
 .report-copy p {
-  max-width: 1080px;
+  max-width: none;
+  width: 100%;
   font-family: var(--serif);
   font-size: 25px;
   font-weight: 300;
