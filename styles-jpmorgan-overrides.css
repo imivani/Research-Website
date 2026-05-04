@@ -2367,11 +2367,19 @@ body[data-report-slug="xeqt"] { --report-accent: #1f5fa3; }
   body {
     zoom: 0.85;
   }
+
+  body.lightbox-open .lightbox {
+    zoom: 1.1764705882;
+  }
 }
 
 @media (min-width: 1600px) {
   body {
     zoom: 0.78;
+  }
+
+  body.lightbox-open .lightbox {
+    zoom: 1.2820512821;
   }
 }
 
