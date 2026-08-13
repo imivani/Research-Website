@@ -8,6 +8,7 @@ const ORIGIN = 'https://imivani.com';
 const EMAIL = 'business@imivani.com';
 const LINKEDIN = 'https://www.linkedin.com/in/imivani/';
 const FAVICON_VERSION = '20260428';
+const SCRIPT_VERSION = '1777682863692898000';
 const LINKEDIN_LABEL = 'linkedin.com/in/imivani';
 
 const ICBC_MENU = [
@@ -32,6 +33,7 @@ const ICBC_MENU = [
 ];
 
 const EQUITY_MENU = [
+  ['megawatts-on-paper', 'Megawatts on Paper'],
   ['sde', 'Spartan Delta Research Report (HFC)'],
   ['altagas', 'AltaGas Research Report (CFA)'],
   ['hydro-one-corporate-finance', 'Hydro One Corporate Finance Report'],
@@ -68,6 +70,7 @@ const HOME_GROUPS = [
     subtitle: 'Academic research and competitive casework.',
     grid: 'grid-featured',
     items: [
+      ['megawatts-on-paper', 'Megawatts on Paper', 'feature'],
       ['sde', 'Spartan Delta Research Report (HFC)', 'feature'],
       ['altagas', 'AltaGas Research Report (CFA)', 'feature'],
       ['hydro-one-corporate-finance', 'Hydro One Corporate Finance Report', ''],
@@ -339,7 +342,7 @@ function shell({ title, description, prefix, currentSlug, body, bodyAttrs = '' }
   <meta name="theme-color" content="#8f5a39">
   <link rel="stylesheet" href="${prefix}styles.css">
   <link rel="stylesheet" href="${prefix}styles-jpmorgan-overrides.css">
-  <script src="${prefix}script.js" defer></script>
+  <script src="${prefix}script.js?v=${SCRIPT_VERSION}" defer></script>
 </head>
 <body class="jpm-theme"${bodyAttrs ? ` ${bodyAttrs}` : ''}>
 ${header(prefix, currentSlug)}
@@ -483,7 +486,11 @@ function renderHome(prefix = '') {
       </div>
     </section>`;
   const groups = HOME_GROUPS.map((group, index) => {
-    const cards = group.items.map((item) => renderCard(item, images[imageIndex++], prefix, group, cardIndex++)).join('');
+    const cards = group.items.map((item) => {
+      const custom = CUSTOM_REPORTS[item[0]];
+      const image = custom?.consumeInventoryImage === false ? null : images[imageIndex++];
+      return renderCard(item, image, prefix, group, cardIndex++);
+    }).join('');
     const sectionNumber = String(index + 1).padStart(2, '0');
     const head = `
       <div class="section-head">
@@ -595,6 +602,34 @@ const REPORT_PARAGRAPH_OVERRIDES = {
 };
 
 const CUSTOM_REPORTS = {
+  'megawatts-on-paper': {
+    title: 'Megawatts on Paper',
+    description: 'An underwriting framework that converts Alberta\'s 20.5 GW data-centre queue into a probability-weighted estimate of bankable electricity demand.',
+    consumeInventoryImage: false,
+    cardImage: 'assets/megawatts-on-paper/megawatts-on-paper-page-01.webp',
+    cardAlt: 'Cover of Megawatts on Paper, an independent research report on Alberta data-centre electricity demand',
+    meta: [
+      { tag: 'h2', text: 'Independent Research' },
+      { tag: 'p', text: 'Aug 2026' },
+      { tag: 'p', text: 'Alberta Power and Data Centres' },
+    ],
+    paragraphs: [
+      'Alberta\'s data-centre queue has grown to 20,525 MW, roughly twice the province\'s 2025 average internal load, but the queue is a record of requested interconnection capacity rather than a forecast of operating demand. This paper builds a stage-gated conversion framework that separates requested megawatts from technically studied, financed, contracted, energized, and utilized load.',
+      'The analysis finds that 18.7 GW, or 91% of the non-cancelled queue, remains under the AESO\'s preliminary ISD review, while only 1.2 GW is both modelled and included in the 2026 Long-term Adequacy Metrics. A probability-weighted scenario model produces a 2030 realized-load range of approximately 0.8 to 4.0 GW and a central estimate near 1.5 GW, far below the headline queue.',
+      'The investment implication is that value should accrue less to raw queue position and more to assets that remove conversion bottlenecks: deliverable generation, substations, firm gas and transmission access, and flexible campuses protected by deposits, milestones, termination payments, and redeployment rights. The paper converts a power-market headline into an underwriting framework for distinguishing bankable demand from optionality.',
+    ],
+    images: Array.from({ length: 24 }, (_, index) => ({
+      src: `assets/megawatts-on-paper/megawatts-on-paper-page-${String(index + 1).padStart(2, '0')}.webp`,
+      alt: index === 0
+        ? 'Cover of Megawatts on Paper by Ivan Imshenetskyy'
+        : `Megawatts on Paper research report page ${index + 1}`,
+    })),
+    download: {
+      localPath: 'assets/docs/megawatts-on-paper-august-2026.pdf',
+      label: 'Download PDF',
+      output: 'PDF report',
+    },
+  },
   'hydro-one-corporate-finance': {
     title: 'Hydro One Corporate Finance Report',
     description: 'A FNCE 451 corporate finance report assessing Hydro One Limited through stock price, cost of capital, capital structure, and payout policy analysis.',
