@@ -1121,20 +1121,13 @@ figure {
 
 .about-layout {
   display: grid;
-  grid-template-columns: minmax(260px, 440px) minmax(420px, 1fr);
-  gap: 64px;
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
   padding: 46px 0 50px;
 }
 
-.about-photo {
-  width: 100%;
-  aspect-ratio: auto;
-  height: auto;
-  max-height: none;
-  object-fit: contain;
-  align-self: start;
-  border-radius: 16px;
+.about-copy {
+  width: min(100%, 980px);
 }
 
 .about-kicker {
@@ -2319,11 +2312,6 @@ figure {
   .about-layout {
     align-items: start;
     gap: 34px;
-  }
-
-  .about-photo {
-    height: auto;
-    max-height: none;
   }
 
   .report-meta {
