@@ -1121,13 +1121,18 @@ figure {
 
 .about-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: minmax(260px, 440px) minmax(420px, 1fr);
+  gap: 64px;
   align-items: start;
   padding: 46px 0 50px;
 }
 
-.about-copy {
-  width: min(100%, 980px);
+.about-photo {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  align-self: start;
+  border-radius: 16px;
 }
 
 .about-kicker {
