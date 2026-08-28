@@ -1129,7 +1129,7 @@ figure {
 
 .about-photo {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: auto;
   height: auto;
   max-height: none;
   object-fit: contain;
